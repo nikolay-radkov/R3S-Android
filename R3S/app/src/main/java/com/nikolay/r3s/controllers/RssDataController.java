@@ -1,4 +1,4 @@
-//package com.nikolay.r3s.utils;
+//package com.nikolay.r3s.controllers;
 //
 //import android.os.AsyncTask;
 //import android.util.Log;
@@ -9,28 +9,24 @@
 //import org.xmlpull.v1.XmlPullParserException;
 //import org.xmlpull.v1.XmlPullParserFactory;
 //
-//import java.io.ByteArrayOutputStream;
 //import java.io.IOException;
 //import java.io.InputStream;
-//import java.io.UnsupportedEncodingException;
 //import java.net.HttpURLConnection;
 //import java.net.MalformedURLException;
-//import java.net.ProtocolException;
 //import java.net.URL;
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;
 //import java.util.ArrayList;
 //import java.util.Date;
 //
-//
-//public class HttpRequestService extends AsyncTask<String, Integer, Subscription[]> {
+//public class RssDataController extends AsyncTask<String, Integer, Subscription[]> {
 //    private RSSXMLTag currentTag;
 //
 //    @Override
 //    protected Subscription[] doInBackground(String... params) {
 //        String urlStr = params[0];
 //        InputStream is = null;
-//        ArrayList postDataList = new ArrayList();
+//        ArrayList<> postDataList = new ArrayList();
 //        try {
 //            URL url = new URL(urlStr);
 //            HttpURLConnection connection = (HttpURLConnection) url
@@ -40,28 +36,26 @@
 //            connection.setRequestMethod("GET");
 //            connection.setDoInput(true);
 //            connection.connect();
-//            int response = connection.getResponseCode();
-//            Log.d("debug", "The response is:"+response);
 //
+//            int response = connection.getResponseCode();
+//            Log.d("debug", "The response is: " + response);
 //            is = connection.getInputStream();
 //
 //// parse xml after getting the data
-//            XmlPullParserFactory factory = XmlPullParserFactory
-//                    .newInstance();
+//            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 //            factory.setNamespaceAware(true);
 //            XmlPullParser xpp = factory.newPullParser();
 //            xpp.setInput(is, null);
 //
 //            int eventType = xpp.getEventType();
 //            Subscription pdData = null;
-//            SimpleDateFormat dateFormat = new SimpleDateFormat(
-//                    "EEE, DD MMM yyyy HH:mm: ss");
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE,DD MMM yyyy HH:mm:ss");
 //            while (eventType != XmlPullParser.END_DOCUMENT) {
 //                if (eventType == XmlPullParser.START_DOCUMENT) {
 //
 //                } else if (eventType == XmlPullParser.START_TAG) {
 //                    if (xpp.getName().equals("item")) {
-//                        pdData = new Subscription();
+//                        pdData = new PostData();
 //                        currentTag = RSSXMLTag.IGNORETAG;
 //                    } else if (xpp.getName().equals("title")) {
 //                        currentTag = RSSXMLTag.TITLE;
@@ -75,7 +69,7 @@
 //// format the data here, otherwise format data in
 //// Adapter
 //                        Date postDate = dateFormat.parse(pdData.getUpdatedAt());
-//                        pdData.postDate = dateFormat.format(postDate);
+//                        pdData.setUpdatedAt(dateFormat.format(postDate));
 //                        postDataList.add(pdData);
 //                    } else {
 //                        currentTag = RSSXMLTag.IGNORETAG;
@@ -88,28 +82,28 @@
 //                        switch (currentTag) {
 //                            case TITLE:
 //                                if (content.length() != 0) {
-//                                    if (pdData.postTitle != null) {
-//                                        pdData.postTitle += content;
+//                                    if (pdData.getName() != null) {
+//                                        pdData.setName(pdData.getName() + content);
 //                                    } else {
-//                                        pdData.postTitle = content;
+//                                        pdData.setName(content);
 //                                    }
 //                                }
 //                                break;
 //                            case LINK:
 //                                if (content.length() != 0) {
-//                                    if (pdData.postLink != null) {
-//                                        pdData.postLink += content;
+//                                    if (pdData.getUrl() != null) {
+//                                        pdData.setUrl(pdData.getUrl()+ content);
 //                                    } else {
-//                                        pdData.postLink = content;
+//                                        pdData.setUrl(content);
 //                                    }
 //                                }
 //                                break;
 //                            case DATE:
 //                                if (content.length() != 0) {
-//                                    if (pdData.postDate != null) {
-//                                        pdData.postDate += content;
+//                                    if (pdData.getUpdatedAt() != null) {
+//                                        pdData.setUpdatedAt(pdData.getUpdatedAt() + content);
 //                                    } else {
-//                                        pdData.postDate = content;
+//                                        pdData.setUpdatedAt(content);
 //                                    }
 //                                }
 //                                break;
@@ -139,4 +133,12 @@
 //        return postDataList;
 //    }
 //
+//    @Override
+//    protected void onPostExecute(ArrayList result) {
+//// TODO Auto-generated method stub
+//        for (int i = 0; i < result.size(); i++) {
+//            listData.add(result.get(i));
+//        }
+//        //postAdapter.notifyDataSetChanged();
+//    }
 //}

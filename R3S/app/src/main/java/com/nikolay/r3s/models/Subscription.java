@@ -14,6 +14,10 @@ public class Subscription {
         this.url = url;
     }
 
+    public Subscription() {
+
+    }
+
     public int getId() {
         return id;
     }

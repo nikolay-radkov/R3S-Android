@@ -38,6 +38,8 @@
             android:label="@string/title_activity_entry_info"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity android:name=".activities.SubscribeActivity" >
+        </activity>
     </application>
 
 </manifest>

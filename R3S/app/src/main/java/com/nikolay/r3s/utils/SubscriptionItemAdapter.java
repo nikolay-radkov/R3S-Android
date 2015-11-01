@@ -12,34 +12,48 @@ import android.widget.TextView;
 import com.nikolay.r3s.R;
 import com.nikolay.r3s.models.Subscription;
 
+import java.util.ArrayList;
+
 public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
     private Activity myContext;
-    private Subscription[] datas;
+    private ArrayList<Subscription> data;
 
-    public SubscriptionItemAdapter(Context context, int textViewResourceId, Subscription[] objects) {
+    public SubscriptionItemAdapter(Context context, int textViewResourceId, ArrayList<Subscription> objects) {
         super(context, textViewResourceId, objects);
-        // TODO Auto-generated constructor stub
         myContext = (Activity) context;
-        datas = objects;
+        this.data = objects;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = myContext.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.subscription_item, null);
-        ImageView thumbImageView = (ImageView) rowView.findViewById(R.id.postThumb);
-        if (datas[position].getFavicon() == null) {
-            thumbImageView.setImageResource(R.drawable.error);
+        ViewHolder viewHolder;
+
+        if (convertView == null) {
+            LayoutInflater inflater = myContext.getLayoutInflater();
+            convertView = inflater.inflate(R.layout.subscription_item, null);
+
+            viewHolder = new ViewHolder();
+            viewHolder.postThumbView = (ImageView) convertView.findViewById(R.id.postThumb);
+            viewHolder.postTitleView = (TextView) convertView.findViewById(R.id.postTitleLabel);
+            viewHolder.postDateView = (TextView) convertView.findViewById(R.id.postDateLabel);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        TextView postTitleView = (TextView) rowView
-                .findViewById(R.id.postTitleLabel);
-        postTitleView.setText(datas[position].getName());
+        if (data.get(position).getFavicon() == null) {
+            viewHolder.postThumbView.setImageResource(R.drawable.error);
+        }
 
-        TextView postDateView = (TextView) rowView
-                .findViewById(R.id.postDateLabel);
-        postDateView.setText(datas[position].getUpdatedAt());
+        viewHolder.postTitleView.setText(data.get(position).getName());
+        viewHolder.postDateView.setText(data.get(position).getUpdatedAt());
 
-        return rowView;
+        return convertView;
+    }
+
+    static class ViewHolder {
+        TextView postTitleView;
+        TextView postDateView;
+        ImageView postThumbView;
     }
 }
 
