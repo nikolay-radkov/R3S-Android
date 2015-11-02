@@ -1,6 +1,6 @@
 package com.nikolay.r3s.models;
 
-public class Subscription {
+public class Subscription implements IModel {
     private int id;
     private String favicon;
     private String name;
@@ -18,10 +18,12 @@ public class Subscription {
 
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

@@ -1,6 +1,6 @@
 package com.nikolay.r3s.models;
 
-public class Entry {
+public class Entry implements IModel{
     private int id;
     private String title;
     private String createdAt;
@@ -14,10 +14,12 @@ public class Entry {
         this.content = content;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -52,5 +54,9 @@ public class Entry {
 
     public void setSubscriptionId(int subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    public boolean hasSubscriptionId(int id) {
+        return this.getSubscriptionId() == id;
     }
 }
