@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.UUID;
 
 public class GenericRepository<T extends IModel> implements IRepository<T> {
     private DataContext context;
@@ -33,6 +34,8 @@ public class GenericRepository<T extends IModel> implements IRepository<T> {
 
     @Override
     public void create(T newObject) {
+        UUID randomId =  UUID.randomUUID();
+        newObject.setId(randomId.toString());
         this.set.put(newObject.getId(), newObject);
     }
 

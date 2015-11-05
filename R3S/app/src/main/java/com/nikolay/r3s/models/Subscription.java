@@ -1,17 +1,21 @@
 package com.nikolay.r3s.models;
 
+import java.util.ArrayList;
+
 public class Subscription implements IModel {
-    private int id;
+    private String id;
     private String favicon;
     private String name;
     private String url;
     private String updatedAt;
+    private ArrayList<Entry> entries;
 
     public Subscription(String name, String url, String favicon, String updatedAt) {
         this.updatedAt = updatedAt;
         this.favicon = favicon;
         this.name = name;
         this.url = url;
+        this.entries = new ArrayList<Entry>();
     }
 
     public Subscription() {
@@ -19,12 +23,12 @@ public class Subscription implements IModel {
     }
 
     @Override
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -54,6 +58,14 @@ public class Subscription implements IModel {
 
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+    public ArrayList<Entry> getEntries() {
+        return entries;
+    }
+
+    public void setEntries(ArrayList<Entry> entries) {
+        this.entries = entries;
     }
 
     public void setUpdatedAt(String updatedAt) {

@@ -14,17 +14,13 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by Nikolay on 05-Nov-15.
- */
 public class XmlParserHelper {
     private static RSSXMLTags currentTag;
 
-    public static ArrayList<Subscription> parse(InputStream is) {
-        ArrayList<Subscription> postDataList = new ArrayList<Subscription>();
+    public static Subscription parse(InputStream is) {
+        Subscription subscription = null;
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -32,14 +28,13 @@ public class XmlParserHelper {
             xpp.setInput(is, null);
 
             int eventType = xpp.getEventType();
-            Subscription pdData = null;
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE,DD MMM yyyy HH:mm:ss");
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_DOCUMENT) {
-
+                    String p = xpp.getName();
                 } else if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().equals("item")) {
-                        pdData = new Subscription();
+                        subscription = new Subscription();
                         currentTag = RSSXMLTags.IGNORETAG;
                     } else if (xpp.getName().equals("title")) {
                         currentTag = RSSXMLTags.TITLE;
@@ -50,11 +45,8 @@ public class XmlParserHelper {
                     }
                 } else if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().equals("item")) {
-// format the data here, otherwise format data in
-// Adapter
-                        Date postDate = dateFormat.parse(pdData.getUpdatedAt());
-                        pdData.setUpdatedAt(dateFormat.format(postDate));
-                        postDataList.add(pdData);
+                        Date postDate = dateFormat.parse(subscription.getUpdatedAt());
+                        subscription.setUpdatedAt(dateFormat.format(postDate));
                     } else {
                         currentTag = RSSXMLTags.IGNORETAG;
                     }
@@ -62,32 +54,32 @@ public class XmlParserHelper {
                     String content = xpp.getText();
                     content = content.trim();
                     Log.d("debug", content);
-                    if (pdData != null) {
+                    if (subscription != null) {
                         switch (currentTag) {
                             case TITLE:
                                 if (content.length() != 0) {
-                                    if (pdData.getName() != null) {
-                                        pdData.setName(pdData.getName() + content);
+                                    if (subscription.getName() != null) {
+                                        subscription.setName(subscription.getName() + content);
                                     } else {
-                                        pdData.setName(content);
+                                        subscription.setName(content);
                                     }
                                 }
                                 break;
                             case LINK:
                                 if (content.length() != 0) {
-                                    if (pdData.getUrl() != null) {
-                                        pdData.setUrl(pdData.getUrl() + content);
+                                    if (subscription.getUrl() != null) {
+                                        subscription.setUrl(subscription.getUrl() + content);
                                     } else {
-                                        pdData.setUrl(content);
+                                        subscription.setUrl(content);
                                     }
                                 }
                                 break;
                             case DATE:
                                 if (content.length() != 0) {
-                                    if (pdData.getUpdatedAt() != null) {
-                                        pdData.setUpdatedAt(pdData.getUpdatedAt() + content);
+                                    if (subscription.getUpdatedAt() != null) {
+                                        subscription.setUpdatedAt(subscription.getUpdatedAt() + content);
                                     } else {
-                                        pdData.setUpdatedAt(content);
+                                        subscription.setUpdatedAt(content);
                                     }
                                 }
                                 break;
@@ -99,7 +91,6 @@ public class XmlParserHelper {
 
                 eventType = xpp.next();
             }
-            Log.v("tst", String.valueOf((postDataList.size())));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -110,7 +101,6 @@ public class XmlParserHelper {
             e.printStackTrace();
         }
 
-        return postDataList;
+        return subscription;
     }
-
 }

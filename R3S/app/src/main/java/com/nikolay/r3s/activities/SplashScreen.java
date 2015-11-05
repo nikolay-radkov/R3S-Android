@@ -44,21 +44,21 @@ public class SplashScreen extends Activity {
         this.finish();
     }
 
-    private class UpdateDataTask extends AsyncTask<String, Integer, ArrayList<Subscription>> {
+    private class UpdateDataTask extends AsyncTask<String, Integer, Subscription> {
 
         @Override
-        protected ArrayList<Subscription> doInBackground(String... params) {
+        protected Subscription doInBackground(String... params) {
             // Read links from db
             // Save to DataContext
             // Save to db
             String urlStr = "http://www.gamespot.com/feeds/image-galleries/";
             InputStream is = HttpHelper.getRequestStream(urlStr);
-            ArrayList<Subscription> result = XmlParserHelper.parse(is);
+            Subscription result = XmlParserHelper.parse(is);
             return result;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Subscription> subscriptions) {
+        protected void onPostExecute(Subscription subscription) {
             goToHome();
         }
     }

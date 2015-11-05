@@ -3,17 +3,17 @@ package com.nikolay.r3s.data.repositories;
 import com.nikolay.r3s.models.Entry;
 
 public class EntrySpecificationBySubscriptionId implements ISpecification<Entry> {
-    private int subscriptionId;
+    private String subscriptionId;
 
-    public EntrySpecificationBySubscriptionId(int id) {
+    public EntrySpecificationBySubscriptionId(String id) {
         this.setSubscriptionId(id);
     }
 
-    private void setSubscriptionId(int id) {
+    private void setSubscriptionId(String id) {
         this.subscriptionId = id;
     }
 
-    private int getSubscriptionId() {
+    private String getSubscriptionId() {
         return this.subscriptionId;
     }
 
