@@ -1,6 +1,5 @@
-package com.nikolay.r3s.controllers;
+package com.nikolay.r3s.utils;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.nikolay.r3s.constants.RSSXMLTags;
@@ -12,37 +11,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RssDataController extends AsyncTask<String, Integer, ArrayList<Subscription>> {
-    private RSSXMLTags currentTag;
+/**
+ * Created by Nikolay on 05-Nov-15.
+ */
+public class XmlParserHelper {
+    private static RSSXMLTags currentTag;
 
-    @Override
-    protected ArrayList doInBackground(String... params) {
-        String urlStr = params[0];
-        InputStream is = null;
+    public static ArrayList<Subscription> parse(InputStream is) {
         ArrayList<Subscription> postDataList = new ArrayList<Subscription>();
         try {
-            URL url = new URL(urlStr);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setReadTimeout(10 * 1000);
-            connection.setConnectTimeout(10 * 1000);
-            connection.setRequestMethod("GET");
-            connection.setDoInput(true);
-            connection.connect();
-
-            int response = connection.getResponseCode();
-            Log.d("debug", "The response is: " + response);
-            is = connection.getInputStream();
-
-// parse xml after getting the data
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();
@@ -118,28 +101,16 @@ public class RssDataController extends AsyncTask<String, Integer, ArrayList<Subs
             }
             Log.v("tst", String.valueOf((postDataList.size())));
         } catch (MalformedURLException e) {
-// TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-// TODO Auto-generated catch block
             e.printStackTrace();
         } catch (XmlPullParserException e) {
-// TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ParseException e) {
-// TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         return postDataList;
     }
 
-//    @Override
-//    protected void onPostExecute(ArrayList<Subscription> result) {
-//// TODO Auto-generated method stub
-//        for (int i = 0; i < result.size(); i++) {
-//            listData.add(result.get(i));
-//        }
-//        //   postAdapter.notifyDataSetChanged();
-//    }
 }
