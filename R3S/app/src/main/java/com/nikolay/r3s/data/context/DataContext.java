@@ -26,9 +26,9 @@ public class DataContext {
         this.subscriptions = new Hashtable();
         this.entries = new Hashtable();
 
-        subscriptions.put("1", new Subscription("IronMan", null, null, new Date().toString()));
-        subscriptions.put("2", new Subscription("Fast and Furious", null, null, new Date().toString()));
-        subscriptions.put("3", new Subscription("Avengers", null, null, new Date().toString()));
+//        subscriptions.put("1", new Subscription("IronMan", null, null, new Date().toString()));
+//        subscriptions.put("2", new Subscription("Fast and Furious", null, null, new Date().toString()));
+//        subscriptions.put("3", new Subscription("Avengers", null, null, new Date().toString()));
     }
 
 

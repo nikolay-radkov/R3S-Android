@@ -8,18 +8,20 @@ public class Subscription implements IModel {
     private String name;
     private String url;
     private String updatedAt;
+    private String description;
     private ArrayList<Entry> entries;
 
-    public Subscription(String name, String url, String favicon, String updatedAt) {
+    public Subscription(String name, String url, String favicon, String description, String updatedAt) {
         this.updatedAt = updatedAt;
         this.favicon = favicon;
         this.name = name;
         this.url = url;
+        this.description = description;
         this.entries = new ArrayList<Entry>();
     }
 
     public Subscription() {
-
+        this.entries = new ArrayList<Entry>();
     }
 
     @Override
@@ -70,5 +72,17 @@ public class Subscription implements IModel {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void addEntry(Entry entry) {
+        this.entries.add(entry);
     }
 }

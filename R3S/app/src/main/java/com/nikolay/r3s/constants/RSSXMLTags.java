@@ -6,5 +6,5 @@ public enum RSSXMLTags {
     LINK,
     CONTENT,
     GUID,
-    IGNORETAG;
+    IGNORETAG, DESCRIPTION, URL;
 }

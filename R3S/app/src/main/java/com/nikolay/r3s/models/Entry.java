@@ -6,12 +6,19 @@ public class Entry implements IModel{
     private String createdAt;
     private String content;
     private String subscriptionId;
+    private String link;
 
-    public Entry(String subscriptionId, String title, String createdAt, String content) {
+    public Entry(String subscriptionId, String title, String createdAt,
+                 String content, String link) {
         this.subscriptionId = subscriptionId;
         this.title = title;
         this.createdAt = createdAt;
         this.content = content;
+        this.link = link;
+    }
+
+    public Entry() {
+
     }
 
     @Override
@@ -47,6 +54,10 @@ public class Entry implements IModel{
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getLink() { return link; }
+
+    public void setLink(String link) { this.link = link; }
 
     public String getSubscriptionId() {
         return subscriptionId;

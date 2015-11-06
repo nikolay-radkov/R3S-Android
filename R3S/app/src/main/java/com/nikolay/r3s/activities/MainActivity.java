@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private GenericRepository<Subscription> repository = new GenericRepository<Subscription>(RepositoryTypes.SUBSCRIPTION);
 
     @Override
@@ -46,19 +46,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SubscribeActivity.class);
-                startActivity(intent);
-            }
-        });
+        fab.setOnClickListener(this);
 
         ArrayList<Subscription> listData = repository.getAll();
 
         ListView listView = (ListView) this.findViewById(R.id.subscriptionsListView);
         SubscriptionItemAdapter itemAdapter = new SubscriptionItemAdapter(this, R.layout.subscription_item, listData);
-//        ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, R.layout.subscription_item, listData);
         listView.setAdapter(itemAdapter);
     }
 
@@ -84,5 +77,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(MainActivity.this, SubscribeActivity.class);
+        startActivity(intent);
+        this.finish();
+    }
 }
