@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IRepository<T extends IModel> {
 
-    T getById(int id);
+    T getById(String id);
     ArrayList<T> getAll();
     void create(T newObject);
     void update(T updatedObject);

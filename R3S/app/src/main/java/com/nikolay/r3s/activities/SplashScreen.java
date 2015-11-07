@@ -8,6 +8,8 @@ import android.renderscript.ScriptGroup;
 
 import com.nikolay.r3s.R;
 import com.nikolay.r3s.controllers.NetworkManager;
+import com.nikolay.r3s.data.repositories.GenericRepository;
+import com.nikolay.r3s.models.Entry;
 import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.HttpHelper;
 import com.nikolay.r3s.utils.XmlParserHelper;
@@ -59,6 +61,16 @@ public class SplashScreen extends Activity {
 
         @Override
         protected void onPostExecute(Subscription subscription) {
+            GenericRepository<Subscription> subscriptions = new GenericRepository<Subscription>(Subscription.class);
+            GenericRepository<Entry> entries = new GenericRepository<Entry>(Entry.class);
+            subscriptions.create(subscription);
+
+            for (Entry entry : subscription.getEntries()) {
+                entry.setSubscriptionId(subscription.getId());
+                entries.create(entry);
+            }
+
+
             goToHome();
         }
     }

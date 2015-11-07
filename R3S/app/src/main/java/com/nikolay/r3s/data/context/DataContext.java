@@ -1,7 +1,9 @@
 package com.nikolay.r3s.data.context;
 
+import com.nikolay.r3s.activities.SubscribeActivity;
 import com.nikolay.r3s.constants.RepositoryTypes;
 import com.nikolay.r3s.models.Entry;
+import com.nikolay.r3s.models.IModel;
 import com.nikolay.r3s.models.Subscription;
 
 import java.util.ArrayList;
@@ -31,16 +33,13 @@ public class DataContext {
 //        subscriptions.put("3", new Subscription("Avengers", null, null, new Date().toString()));
     }
 
-
-
-    public Hashtable getSet(RepositoryTypes type) {
-        switch (type) {
-            case SUBSCRIPTION:
-                return  subscriptions;
-            case ENTRY:
-                return entries;
-            default:
-                return null;
+    public <T extends IModel> Hashtable getSet(Class<T> type) {
+        if (type == Entry.class) {
+            return entries;
+        } else if (type == Subscription.class) {
+            return  subscriptions;
         }
+
+        return null;
     }
 }

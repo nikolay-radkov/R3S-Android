@@ -16,13 +16,13 @@ public class GenericRepository<T extends IModel> implements IRepository<T> {
     private DataContext context;
     private Hashtable set;
 
-    public GenericRepository(RepositoryTypes type) {
+    public GenericRepository(Class<T> type) {
         this.context = DataContext.getInstance();
         this.set = this.context.getSet(type);
     }
 
     @Override
-    public T getById(int id) {
+    public T getById(String id) {
         return (T)set.get(id);
     }
 

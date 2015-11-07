@@ -31,7 +31,6 @@ public class XmlParserHelper {
             boolean isInEntry = false;
 
             int eventType = xpp.getEventType();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE,DD MMM yyyy HH:mm:ss");
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_DOCUMENT) {
 
@@ -48,7 +47,12 @@ public class XmlParserHelper {
                     } else if (tagName.equals("pubDate")) {
                         currentTag = RSSXMLTags.DATE;
                     } else if (tagName.equals("description")) {
-                        currentTag = RSSXMLTags.DESCRIPTION;
+                        if(isInEntry) {
+                            String contentValue = getInnerXml(xpp);
+                            entry.setContent(contentValue);
+                        } else {
+                            currentTag = RSSXMLTags.DESCRIPTION;
+                        }
                     } else if (xpp.getName().equals("url")) {
                         currentTag = RSSXMLTags.URL;
                     }
@@ -94,6 +98,15 @@ public class XmlParserHelper {
 //                                    }
                                     }
                                     break;
+//                                case DESCRIPTION:
+//                                    if (content.length() != 0) {
+//                                        if (entry.getContent() != null) {
+//                                            entry.setContent(entry.getContent() + content);
+//                                        } else {
+//                                            entry.setContent(content);
+//                                        }
+//                                    }
+//                                    break;
                                 default:
                                     break;
                             }
@@ -155,5 +168,36 @@ public class XmlParserHelper {
         }
 
         return subscription;
+    }
+
+
+    private static String getInnerXml(XmlPullParser parser)
+            throws XmlPullParserException, IOException {
+        StringBuilder sb = new StringBuilder();
+        int depth = 1;
+        while (depth != 0) {
+            switch (parser.next()) {
+                case XmlPullParser.END_TAG:
+                    depth--;
+                    if (depth > 0) {
+                        sb.append("</" + parser.getName() + ">");
+                    }
+                    break;
+                case XmlPullParser.START_TAG:
+                    depth++;
+                    StringBuilder attrs = new StringBuilder();
+                    for (int i = 0; i < parser.getAttributeCount(); i++) {
+                        attrs.append(parser.getAttributeName(i) + "=\""
+                                + parser.getAttributeValue(i) + "\" ");
+                    }
+                    sb.append("<" + parser.getName() + " " + attrs.toString() + ">");
+                    break;
+                default:
+                    sb.append(parser.getText());
+                    break;
+            }
+        }
+        String content = sb.toString();
+        return content;
     }
 }

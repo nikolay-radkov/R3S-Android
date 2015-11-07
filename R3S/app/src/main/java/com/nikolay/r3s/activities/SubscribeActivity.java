@@ -56,8 +56,8 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
             Subscription subscription = XmlParserHelper.parse(is);
 
             if (subscription != null) {
-                GenericRepository<Subscription> subscriptions = new GenericRepository<Subscription>(RepositoryTypes.SUBSCRIPTION);
-                GenericRepository<Entry> entries = new GenericRepository<Entry>(RepositoryTypes.ENTRY);
+                GenericRepository<Subscription> subscriptions = new GenericRepository<Subscription>(Subscription.class);
+                GenericRepository<Entry> entries = new GenericRepository<Entry>(Entry.class);
                 subscriptions.create(subscription);
 
                 for (Entry entry : subscription.getEntries()) {

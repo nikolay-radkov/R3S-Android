@@ -17,7 +17,7 @@ import com.nikolay.r3s.utils.EntryItemAdapter;
 import java.util.ArrayList;
 
 public class EntriesActivity extends AppCompatActivity  implements AdapterView.OnItemClickListener {
-    private GenericRepository<Entry> repository = new GenericRepository<Entry>(RepositoryTypes.ENTRY);
+    private GenericRepository<Entry> repository = new GenericRepository<Entry>(Entry.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

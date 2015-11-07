@@ -12,11 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 
 import com.nikolay.r3s.R;
+import com.nikolay.r3s.constants.RepositoryTypes;
+import com.nikolay.r3s.data.repositories.GenericRepository;
+import com.nikolay.r3s.models.Entry;
 
 public class EntryInfoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,24 @@ public class EntryInfoActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        String entryId = null;
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                entryId = null;
+            } else {
+                entryId = extras.getString("ENTRY_ID");
+            }
+        } else {
+            entryId = (String) savedInstanceState.getSerializable("ENTRY_ID");
+        }
+
+        GenericRepository<Entry> repository = new GenericRepository<Entry>(Entry.class);
+        Entry entry = repository.getById(entryId);
+        webView = (WebView)this.findViewById(R.id.webViewEntryInfo);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.loadData(entry.getContent(), "text/html; charset=utf-8","utf-8");
     }
 
     @Override

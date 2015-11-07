@@ -20,7 +20,7 @@ import com.nikolay.r3s.utils.SubscriptionItemAdapter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private GenericRepository<Subscription> repository = new GenericRepository<Subscription>(RepositoryTypes.SUBSCRIPTION);
+    private GenericRepository<Subscription> repository = new GenericRepository<Subscription>(Subscription.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
