@@ -50,16 +50,16 @@ public class GenericRepository<T extends IModel> implements IRepository<T> {
     }
 
     @Override
-    public <TSpecification extends ISpecification> List query(TSpecification specification) {
-        ArrayList<T> elements = new ArrayList<T>();
-        for(Object element: this.set.values()) {
-            T current = (T)this.set.values();
+    public ArrayList<T> query(ISpecification specification) {
+        ArrayList<T> elements = new ArrayList<T>(this.set.values());
+        ArrayList<T> filterElements = new ArrayList<T>();
 
-            if(specification.specified(current)) {
-                elements.add(current);
+        for(Object element: elements) {
+            if(specification.specified((IModel) element)) {
+                filterElements.add((T) element);
             }
         }
 
-        return elements;
+        return filterElements;
     }
 }

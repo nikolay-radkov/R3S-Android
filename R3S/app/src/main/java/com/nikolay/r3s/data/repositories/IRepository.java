@@ -14,5 +14,5 @@ public interface IRepository<T extends IModel> {
     void update(T updatedObject);
     void delete(T deletedObject);
 
-    <TSpecification extends ISpecification> List query(TSpecification specification);
+    ArrayList<T> query(ISpecification specification);
 }

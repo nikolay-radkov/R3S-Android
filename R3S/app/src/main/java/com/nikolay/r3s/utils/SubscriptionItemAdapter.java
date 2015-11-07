@@ -29,7 +29,7 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
 
         if (convertView == null) {
             LayoutInflater inflater = myContext.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.subscription_item, null);
+            convertView = inflater.inflate(R.layout.item_subscription, null);
 
             viewHolder = new ViewHolder();
             viewHolder.postThumbView = (ImageView) convertView.findViewById(R.id.postThumb);
@@ -44,6 +44,9 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
             viewHolder.postThumbView.setImageResource(R.drawable.error);
         }
 
+        viewHolder.postTitleView.setTag(data.get(position).getId());
+
+        viewHolder.id = data.get(position).getId();
         viewHolder.postTitleView.setText(data.get(position).getName());
         viewHolder.postDateView.setText(data.get(position).getUpdatedAt());
 
@@ -51,6 +54,7 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
     }
 
     static class ViewHolder {
+        String id;
         TextView postTitleView;
         TextView postDateView;
         ImageView postThumbView;

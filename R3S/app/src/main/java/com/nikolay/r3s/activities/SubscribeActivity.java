@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.nikolay.r3s.R;
 import com.nikolay.r3s.constants.RepositoryTypes;
 import com.nikolay.r3s.data.repositories.GenericRepository;
+import com.nikolay.r3s.models.Entry;
 import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.HttpHelper;
 import com.nikolay.r3s.utils.XmlParserHelper;
@@ -56,7 +57,14 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
 
             if (subscription != null) {
                 GenericRepository<Subscription> subscriptions = new GenericRepository<Subscription>(RepositoryTypes.SUBSCRIPTION);
+                GenericRepository<Entry> entries = new GenericRepository<Entry>(RepositoryTypes.ENTRY);
                 subscriptions.create(subscription);
+
+                for (Entry entry : subscription.getEntries()) {
+                    entry.setSubscriptionId(subscription.getId());
+                    entries.create(entry);
+                }
+
                 // TODO: Save to db
             } else {
                 // TODO: show message with not supported RSS format

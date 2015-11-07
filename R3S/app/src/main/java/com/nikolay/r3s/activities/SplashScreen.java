@@ -48,9 +48,9 @@ public class SplashScreen extends Activity {
 
         @Override
         protected Subscription doInBackground(String... params) {
-            // Read links from db
-            // Save to DataContext
-            // Save to db
+            // TODO: Read links from db
+            // TODO: Save to DataContext
+            // TODO: Save to db
             String urlStr = "http://www.gamespot.com/feeds/image-galleries/";
             InputStream is = HttpHelper.getRequestStream(urlStr);
             Subscription result = XmlParserHelper.parse(is);
