@@ -70,7 +70,6 @@ public class SplashScreen extends Activity {
                 entries.create(entry);
             }
 
-
             goToHome();
         }
     }

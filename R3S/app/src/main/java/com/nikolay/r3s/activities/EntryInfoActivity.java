@@ -1,21 +1,29 @@
 package com.nikolay.r3s.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.ShareActionProvider;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.ShareApi;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.nikolay.r3s.R;
-import com.nikolay.r3s.constants.RepositoryTypes;
 import com.nikolay.r3s.data.repositories.GenericRepository;
 import com.nikolay.r3s.models.Entry;
 
@@ -23,6 +31,9 @@ public class EntryInfoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private WebView webView;
+    private Entry entry;
+    private ShareDialog shareDialog;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +41,6 @@ public class EntryInfoActivity extends AppCompatActivity
         setContentView(R.layout.activity_entry_info);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,10 +64,32 @@ public class EntryInfoActivity extends AppCompatActivity
         }
 
         GenericRepository<Entry> repository = new GenericRepository<Entry>(Entry.class);
-        Entry entry = repository.getById(entryId);
-        webView = (WebView)this.findViewById(R.id.webViewEntryInfo);
+        this.entry = repository.getById(entryId);
+        webView = (WebView) this.findViewById(R.id.webViewEntryInfo);
         webView.getSettings().setBuiltInZoomControls(true);
-        webView.loadData(entry.getContent(), "text/html; charset=utf-8","utf-8");
+        webView.loadData(this.entry.getContent(), "text/html; charset=utf-8", "utf-8");
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.d("LOG_TAG", "success");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("LOG_TAG", "error");
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("LOG_TAG", "cancel");
+            }
+        });
     }
 
     @Override
@@ -82,6 +106,7 @@ public class EntryInfoActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.entry_info, menu);
+
         return true;
     }
 
@@ -93,8 +118,17 @@ public class EntryInfoActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_share) {
+            if (ShareDialog.canShow(ShareLinkContent.class)) {
+                ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                        .setContentTitle(entry.getTitle())
+                        .setContentUrl(Uri.parse(entry.getLink()))
+                        .build();
+
+                shareDialog.show(linkContent);
+
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -123,5 +157,11 @@ public class EntryInfoActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }
