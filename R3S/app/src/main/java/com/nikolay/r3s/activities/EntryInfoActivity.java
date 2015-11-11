@@ -19,12 +19,11 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.share.ShareApi;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.nikolay.r3s.R;
-import com.nikolay.r3s.data.repositories.GenericRepository;
+import com.nikolay.r3s.data.sqlite.EntriesTable;
 import com.nikolay.r3s.models.Entry;
 
 public class EntryInfoActivity extends AppCompatActivity
@@ -51,19 +50,19 @@ public class EntryInfoActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String entryId = null;
+        int entryId = 0;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-                entryId = null;
+                entryId = 0;
             } else {
-                entryId = extras.getString("ENTRY_ID");
+                entryId = extras.getInt("ENTRY_ID");
             }
         } else {
-            entryId = (String) savedInstanceState.getSerializable("ENTRY_ID");
+            entryId = (int) savedInstanceState.getSerializable("ENTRY_ID");
         }
 
-        GenericRepository<Entry> repository = new GenericRepository<Entry>(Entry.class);
+        EntriesTable repository = new EntriesTable(this);
         this.entry = repository.getById(entryId);
         webView = (WebView) this.findViewById(R.id.webViewEntryInfo);
         webView.getSettings().setBuiltInZoomControls(true);

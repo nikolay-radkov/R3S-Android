@@ -3,7 +3,7 @@ package com.nikolay.r3s.models;
 import java.util.ArrayList;
 
 public class Subscription implements IModel {
-    private String id;
+    private int id;
     private String favicon;
     private String name;
     private String url;
@@ -25,12 +25,12 @@ public class Subscription implements IModel {
     }
 
     @Override
-    public String getId() {
+    public int getId() {
         return id;
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

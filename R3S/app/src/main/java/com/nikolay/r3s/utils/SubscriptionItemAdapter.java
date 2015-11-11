@@ -54,7 +54,7 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
     }
 
     static class ViewHolder {
-        String id;
+        int id;
         TextView postTitleView;
         TextView postDateView;
         ImageView postThumbView;

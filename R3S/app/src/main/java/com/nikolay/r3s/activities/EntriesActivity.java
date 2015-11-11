@@ -7,36 +7,34 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.nikolay.r3s.R;
-import com.nikolay.r3s.constants.RepositoryTypes;
-import com.nikolay.r3s.data.repositories.EntrySpecificationBySubscriptionId;
-import com.nikolay.r3s.data.repositories.GenericRepository;
+import com.nikolay.r3s.R;import com.nikolay.r3s.data.sqlite.EntriesTable;
 import com.nikolay.r3s.models.Entry;
 import com.nikolay.r3s.utils.EntryItemAdapter;
 
 import java.util.ArrayList;
 
 public class EntriesActivity extends AppCompatActivity  implements AdapterView.OnItemClickListener {
-    private GenericRepository<Entry> repository = new GenericRepository<Entry>(Entry.class);
+    private EntriesTable repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entries);
 
-        String subscriptionId = null;
+        repository = new EntriesTable(this);
+        Integer subscriptionId = 0;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
                 subscriptionId = null;
             } else {
-                subscriptionId = extras.getString("SUBSCRIPTION_ID");
+                subscriptionId = extras.getInt("SUBSCRIPTION_ID");
             }
         } else {
-            subscriptionId = (String) savedInstanceState.getSerializable("SUBSCRIPTION_ID");
+            subscriptionId = (Integer) savedInstanceState.getSerializable("SUBSCRIPTION_ID");
         }
 
-        ArrayList<Entry> listData = repository.query(new EntrySpecificationBySubscriptionId(subscriptionId));
+        ArrayList<Entry> listData = repository.getAllBySubscriptionId(subscriptionId);
 
         ListView listView = (ListView) this.findViewById(R.id.entriesListView);
         listView.setOnItemClickListener(this);
@@ -47,7 +45,7 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(EntriesActivity.this, EntryInfoActivity.class);
-        String entryId = (String) view.findViewById(R.id.lblEntryTitle).getTag();
+        int entryId = (int)view.findViewById(R.id.lblEntryTitle).getTag();
         intent.putExtra("ENTRY_ID", entryId);
         startActivity(intent);
     }

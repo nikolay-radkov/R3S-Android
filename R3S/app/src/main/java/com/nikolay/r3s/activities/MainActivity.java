@@ -12,15 +12,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.nikolay.r3s.R;
-import com.nikolay.r3s.constants.RepositoryTypes;
-import com.nikolay.r3s.data.repositories.GenericRepository;
+import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
 import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.SubscriptionItemAdapter;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private GenericRepository<Subscription> repository = new GenericRepository<Subscription>(Subscription.class);
+    private SubscriptionsTable repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
+        repository = new SubscriptionsTable(this);
         ArrayList<Subscription> listData = repository.getAll();
 
         ListView listView = (ListView) this.findViewById(R.id.subscriptionsListView);
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(MainActivity.this, EntriesActivity.class);
-        String subscriptionId = (String) view.findViewById(R.id.postTitleLabel).getTag();
+        int subscriptionId = (int) view.findViewById(R.id.postTitleLabel).getTag();
         intent.putExtra("SUBSCRIPTION_ID", subscriptionId);
         startActivity(intent);
     }

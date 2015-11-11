@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.nikolay.r3s.R;
-import com.nikolay.r3s.constants.RepositoryTypes;
-import com.nikolay.r3s.data.repositories.GenericRepository;
+import com.nikolay.r3s.controllers.NetworkManager;
+import com.nikolay.r3s.data.sqlite.EntriesTable;
+import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
 import com.nikolay.r3s.models.Entry;
 import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.HttpHelper;
@@ -36,15 +37,19 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-       //TODO: Check network connection
+        boolean isConnectedToNetwork = NetworkManager.checkNetworkConnection(this.getApplication());
 
-        switch (v.getId()) {
-            case R.id.btnSubscribe:
-                String rssUrl = this.rssValue.getText().toString();
+        if (isConnectedToNetwork) {
+            switch (v.getId()) {
+                case R.id.btnSubscribe:
+                    String rssUrl = this.rssValue.getText().toString();
 
-                DownloadRssTask downloadRssTask = new DownloadRssTask();
-                downloadRssTask.execute(rssUrl);
-                break;
+                    DownloadRssTask downloadRssTask = new DownloadRssTask();
+                    downloadRssTask.execute(rssUrl);
+                    break;
+            }
+        } else {
+            // TODO: show toast
         }
     }
 
@@ -56,16 +61,15 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
             Subscription subscription = XmlParserHelper.parse(is);
 
             if (subscription != null) {
-                GenericRepository<Subscription> subscriptions = new GenericRepository<Subscription>(Subscription.class);
-                GenericRepository<Entry> entries = new GenericRepository<Entry>(Entry.class);
-                subscriptions.create(subscription);
+                SubscriptionsTable subscriptions = new SubscriptionsTable(SubscribeActivity.this);
+                EntriesTable entries = new EntriesTable(SubscribeActivity.this);
+                int subscriptionId = subscriptions.insert(subscription);
 
                 for (Entry entry : subscription.getEntries()) {
-                    entry.setSubscriptionId(subscription.getId());
-                    entries.create(entry);
+                    entry.setSubscriptionId(subscriptionId);
+                    entries.insert(entry);
                 }
 
-                // TODO: Save to db
             } else {
                 // TODO: show message with not supported RSS format
             }
