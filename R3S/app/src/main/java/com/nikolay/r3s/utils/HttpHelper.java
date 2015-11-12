@@ -21,8 +21,11 @@ public class HttpHelper {
             connection.connect();
 
             int response = connection.getResponseCode();
-            Log.d("debug", "The response is: " + response);
-            is = connection.getInputStream();
+            if (response > 400) {
+                is = null;
+            } else {
+                is = connection.getInputStream();
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

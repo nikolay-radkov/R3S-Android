@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.nikolay.r3s.R;
+import com.nikolay.r3s.controllers.Message;
 import com.nikolay.r3s.controllers.NetworkManager;
 import com.nikolay.r3s.data.sqlite.EntriesTable;
 import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
@@ -22,7 +23,7 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
     private EditText rssValue;
 
     private void goToHome() {
-        Intent intent = new Intent(SubscribeActivity.this,MainActivity.class);
+        Intent intent = new Intent(SubscribeActivity.this, MainActivity.class);
         startActivity(intent);
         this.finish();
     }
@@ -53,33 +54,43 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private class DownloadRssTask extends AsyncTask<String, Integer, Subscription> {
+    private class DownloadRssTask extends AsyncTask<String, Integer, Boolean> {
         @Override
-        protected Subscription doInBackground(String... params) {
+        protected Boolean doInBackground(String... params) {
             String rssUrl = params[0];
             InputStream is = HttpHelper.getRequestStream(rssUrl);
-            Subscription subscription = XmlParserHelper.parse(is);
 
-            if (subscription != null) {
-                SubscriptionsTable subscriptions = new SubscriptionsTable(SubscribeActivity.this);
-                EntriesTable entries = new EntriesTable(SubscribeActivity.this);
-                int subscriptionId = subscriptions.insert(subscription);
+            Message message = new Message(SubscribeActivity.this.getBaseContext());
+            if (is != null) {
 
-                for (Entry entry : subscription.getEntries()) {
-                    entry.setSubscriptionId(subscriptionId);
-                    entries.insert(entry);
+                Subscription subscription = XmlParserHelper.parse(is);
+
+                if (subscription != null) {
+                    SubscriptionsTable subscriptions = new SubscriptionsTable(SubscribeActivity.this);
+                    EntriesTable entries = new EntriesTable(SubscribeActivity.this);
+                    int subscriptionId = subscriptions.insert(subscription);
+
+                    for (Entry entry : subscription.getEntries()) {
+                        entry.setSubscriptionId(subscriptionId);
+                        entries.insert(entry);
+                    }
+
+                    message.print("RSS successfully added");
+                } else {
+                    message.print("Not supported RSS format");
+                    return false;
                 }
-
             } else {
-                // TODO: show message with not supported RSS format
+                message.print("Cannot download the RSS");
+                return false;
             }
 
-          return subscription;
+            return true;
         }
 
         @Override
-        protected void onPostExecute(Subscription subscription) {
-            if( subscription != null) {
+        protected void onPostExecute(Boolean result) {
+            if (result) {
                 goToHome();
             }
         }
