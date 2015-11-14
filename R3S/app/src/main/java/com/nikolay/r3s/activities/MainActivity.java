@@ -21,6 +21,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.nikolay.r3s.R;
+import com.nikolay.r3s.controllers.RefreshSubscriptionsController;
 import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
 import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.SubscriptionItemAdapter;
@@ -102,16 +103,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<Subscription> listData = repository.getAll();
-                itemAdapter = new SubscriptionItemAdapter(MainActivity.this, R.layout.item_subscription, listData);
-                listView.setAdapter(itemAdapter);
-                Toast.makeText(MainActivity.this, "refres", Toast.LENGTH_LONG);
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        }, 2000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                ArrayList<Subscription> listData = repository.getAll();
+//                itemAdapter = new SubscriptionItemAdapter(MainActivity.this, R.layout.item_subscription, listData);
+//                listView.setAdapter(itemAdapter);
+//
+//                Toast.makeText(MainActivity.this, "refres", Toast.LENGTH_LONG).show();
+//                mSwipeRefreshLayout.setRefreshing(false);
+//            }
+//        }, 2000);
+        RefreshSubscriptionsController refresher = new RefreshSubscriptionsController(MainActivity.this, itemAdapter, mSwipeRefreshLayout);
+        refresher.execute();
     }
 
     @Override

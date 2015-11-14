@@ -10,14 +10,7 @@ import android.widget.EditText;
 import com.nikolay.r3s.R;
 import com.nikolay.r3s.controllers.Message;
 import com.nikolay.r3s.controllers.NetworkManager;
-import com.nikolay.r3s.data.sqlite.EntriesTable;
-import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
-import com.nikolay.r3s.models.Entry;
-import com.nikolay.r3s.models.Subscription;
-import com.nikolay.r3s.utils.HttpHelper;
-import com.nikolay.r3s.utils.XmlParserHelper;
-
-import java.io.InputStream;
+import com.nikolay.r3s.utils.RssHelper;
 
 public class SubscribeActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText rssValue;
@@ -58,40 +51,25 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
         @Override
         protected Boolean doInBackground(String... params) {
             String rssUrl = params[0];
-            InputStream is = HttpHelper.getRequestStream(rssUrl);
 
-            Message message = new Message(SubscribeActivity.this.getBaseContext());
-            if (is != null) {
-
-                Subscription subscription = XmlParserHelper.parse(is);
-
-                if (subscription != null) {
-                    SubscriptionsTable subscriptions = new SubscriptionsTable(SubscribeActivity.this);
-                    EntriesTable entries = new EntriesTable(SubscribeActivity.this);
-                    int subscriptionId = subscriptions.insert(subscription);
-
-                    for (Entry entry : subscription.getEntries()) {
-                        entry.setSubscriptionId(subscriptionId);
-                        entries.insert(entry);
-                    }
-
-                    message.print("RSS successfully added");
-                } else {
-                    message.print("Not supported RSS format");
-                    return false;
-                }
-            } else {
-                message.print("Cannot download the RSS");
-                return false;
+            boolean isSuccessful = RssHelper.load(SubscribeActivity.this, rssUrl);
+            if (isSuccessful) {
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
+            Message message = new Message(SubscribeActivity.this);
+
             if (result) {
+                message.print("RSS successfully added");
+
                 goToHome();
+            } else {
+                message.print("Cannot download the RSS");
             }
         }
     }

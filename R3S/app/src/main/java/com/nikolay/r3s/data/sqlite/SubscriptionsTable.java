@@ -24,6 +24,7 @@ public class SubscriptionsTable extends DbTable{
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_URL, subscription.getUrl());
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_UPDATED_AT, subscription.getUpdatedAt());
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_DESCRIPTION, subscription.getDescription());
+        contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_RSS, subscription.getRss());
 
         SQLiteDatabase db = this.sqLiteHelper.getWritableDatabase();
         int id = (int)db.insert(SubscriptionsTableConstants.TABLE_NAME, null, contentValues);
@@ -38,6 +39,7 @@ public class SubscriptionsTable extends DbTable{
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_URL, subscription.getUrl());
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_UPDATED_AT, subscription.getUpdatedAt());
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_DESCRIPTION, subscription.getDescription());
+        contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_RSS, subscription.getRss());
 
         SQLiteDatabase db = this.sqLiteHelper.getWritableDatabase();
         Integer id = new Integer(subscription.getId());
@@ -101,6 +103,22 @@ public class SubscriptionsTable extends DbTable{
                     res.getString(
                             res.getColumnIndex(
                                     SubscriptionsTableConstants.COLUMN_NAME_UPDATED_AT
+                            )
+                    )
+            );
+
+            subscription.setUrl(
+                    res.getString(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_URL
+                            )
+                    )
+            );
+
+            subscription.setRss(
+                    res.getString(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_RSS
                             )
                     )
             );

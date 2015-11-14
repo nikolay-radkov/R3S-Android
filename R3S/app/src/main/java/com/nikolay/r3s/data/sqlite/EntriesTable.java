@@ -104,6 +104,14 @@ public class EntriesTable extends DbTable {
                     )
             );
 
+            entry.setSubscriptionId(
+                    res.getInt(
+                            res.getColumnIndex(
+                                    EntriesTableConstants.COLUMN_NAME_SUBSCRIPTION_ID
+                            )
+                    )
+            );
+
             entries.add(entry);
             res.moveToNext();
         }
@@ -163,5 +171,13 @@ public class EntriesTable extends DbTable {
         }
 
         return entry;
+    }
+
+
+    public Integer deleteAllBySubscriptionId(int id) {
+        SQLiteDatabase db = this.sqLiteHelper.getWritableDatabase();
+        return db.delete(EntriesTableConstants.TABLE_NAME,
+                "subscriptionId = ? ",
+                new String[]{Integer.toString(id)});
     }
 }

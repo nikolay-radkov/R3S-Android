@@ -7,18 +7,10 @@ public class Subscription implements IModel {
     private String favicon;
     private String name;
     private String url;
+    private String rss;
     private String updatedAt;
     private String description;
     private ArrayList<Entry> entries;
-
-    public Subscription(String name, String url, String favicon, String description, String updatedAt) {
-        this.updatedAt = updatedAt;
-        this.favicon = favicon;
-        this.name = name;
-        this.url = url;
-        this.description = description;
-        this.entries = new ArrayList<Entry>();
-    }
 
     public Subscription() {
         this.entries = new ArrayList<Entry>();
@@ -84,5 +76,13 @@ public class Subscription implements IModel {
 
     public void addEntry(Entry entry) {
         this.entries.add(entry);
+    }
+
+    public String getRss() {
+        return rss;
+    }
+
+    public void setRss(String rss) {
+        this.rss = rss;
     }
 }

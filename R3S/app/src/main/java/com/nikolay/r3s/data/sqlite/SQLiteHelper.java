@@ -12,6 +12,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public SQLiteHelper(Context context) {
         super(context, DbConstants.DATABASE_NAME, null, DbConstants.DATABASE_VERSION);
     }
+
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(EntriesTableConstants.CREATE_TABLE);
         db.execSQL(SubscriptionsTableConstants.CREATE_TABLE);
@@ -19,6 +20,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(EntriesTableConstants.DROP_TABLE);
+        db.execSQL(SubscriptionsTableConstants.DROP_TABLE);
+        onCreate(db);
+    }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(EntriesTableConstants.DROP_TABLE);
+        db.execSQL(SubscriptionsTableConstants.DROP_TABLE);
+        onCreate(db);
     }
 }

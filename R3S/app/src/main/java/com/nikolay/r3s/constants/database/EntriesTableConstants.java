@@ -14,12 +14,12 @@ public class EntriesTableConstants {
             + COLUMN_NAME_TITLE + DbConstants.TEXT_TYPE + DbConstants.COMMA_SEP
             + COLUMN_NAME_CREATED_AT + DbConstants.TEXT_TYPE + DbConstants.COMMA_SEP
             + COLUMN_NAME_CONTENT + DbConstants.TEXT_TYPE + DbConstants.COMMA_SEP
-            + COLUMN_NAME_SUBSCRIPTION_ID + DbConstants.TEXT_TYPE + DbConstants.COMMA_SEP
+            + COLUMN_NAME_SUBSCRIPTION_ID + DbConstants.INTEGER_TYPE + DbConstants.COMMA_SEP
             + COLUMN_NAME_LINK + DbConstants.TEXT_TYPE
             + " )";
 
-    public final static String DROP_TABLE = DbConstants.DROP_DROP + TABLE_NAME;
+    public final static String DROP_TABLE = DbConstants.DROP_TABLE + TABLE_NAME;
     public final static String GET_DATA = DbConstants.SELECT_ALL_QUERY + TABLE_NAME;
-    public final static String WHERE_CLAUSE_ID = DbConstants.WHERE_CLAUSE + COLUMN_NAME_ID + DbConstants.EQUAL_EXPRECION;
-    public final static String WHERE_CLAUSE_SUBSCRIPTION_ID =  DbConstants.WHERE_CLAUSE + COLUMN_NAME_SUBSCRIPTION_ID + DbConstants.EQUAL_EXPRECION;
+    public final static String WHERE_CLAUSE_ID = DbConstants.WHERE_CLAUSE + COLUMN_NAME_ID + DbConstants.EQUAL_EXPRESION;
+    public final static String WHERE_CLAUSE_SUBSCRIPTION_ID =  DbConstants.WHERE_CLAUSE + COLUMN_NAME_SUBSCRIPTION_ID + DbConstants.EQUAL_EXPRESION;
 }
