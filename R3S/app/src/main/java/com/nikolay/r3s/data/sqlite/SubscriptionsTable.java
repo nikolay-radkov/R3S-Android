@@ -17,10 +17,20 @@ public class SubscriptionsTable extends DbTable{
         super(context);
     }
 
+    private String getFaviconUrl(String rss) {
+        rss = rss.replace("feed.","");
+        rss = rss.replace("feeds.","");
+        int index = rss.indexOf("//") + 2;
+        index = rss.indexOf('/', index);
+        String faviconUrl = rss.substring(0, index) + "/favicon.ico";
+
+        return faviconUrl;
+    }
+
     public int insert(Subscription subscription) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_NAME, subscription.getName());
-        contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_FAVICON, subscription.getFavicon());
+        contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_FAVICON, getFaviconUrl(subscription.getRss()));
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_URL, subscription.getUrl());
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_UPDATED_AT, subscription.getUpdatedAt());
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_DESCRIPTION, subscription.getDescription());
@@ -35,7 +45,7 @@ public class SubscriptionsTable extends DbTable{
     public boolean update(Subscription subscription) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_NAME, subscription.getName());
-        contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_FAVICON, subscription.getFavicon());
+        contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_FAVICON, getFaviconUrl(subscription.getRss()));
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_URL, subscription.getUrl());
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_UPDATED_AT, subscription.getUpdatedAt());
         contentValues.put(SubscriptionsTableConstants.COLUMN_NAME_DESCRIPTION, subscription.getDescription());
