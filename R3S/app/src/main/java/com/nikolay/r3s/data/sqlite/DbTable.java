@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.nikolay.r3s.constants.database.EntriesTableConstants;
 import com.nikolay.r3s.constants.database.SubscriptionsTableConstants;
+import com.nikolay.r3s.models.Subscription;
 
 public abstract class DbTable {
     protected SQLiteHelper sqLiteHelper;

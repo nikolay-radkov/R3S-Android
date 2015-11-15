@@ -10,7 +10,7 @@
     tools:context="com.nikolay.r3s.activities.MainActivityFragment">
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/subscription_list_wiew"
+        android:id="@+id/subscription_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

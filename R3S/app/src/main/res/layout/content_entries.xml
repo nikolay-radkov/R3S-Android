@@ -5,7 +5,7 @@
     tools:context=".EntriesActivity">
 
     <ListView
-        android:id="@+id/entriesListView"
+        android:id="@+id/entries_list_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 </RelativeLayout>

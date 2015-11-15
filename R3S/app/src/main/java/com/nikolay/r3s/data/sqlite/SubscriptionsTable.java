@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.nikolay.r3s.constants.database.EntriesTableConstants;
 import com.nikolay.r3s.constants.database.SubscriptionsTableConstants;
+import com.nikolay.r3s.models.Entry;
 import com.nikolay.r3s.models.IModel;
 import com.nikolay.r3s.models.Subscription;
 
@@ -138,5 +140,76 @@ public class SubscriptionsTable extends DbTable{
         }
 
         return subscriptions;
+    }
+
+
+    public Subscription getById(int id) {
+        Subscription subscription = new Subscription();
+
+        SQLiteDatabase db = this.sqLiteHelper.getReadableDatabase();
+        Cursor res = db.rawQuery(SubscriptionsTableConstants.GET_DATA  + SubscriptionsTableConstants.WHERE_CLAUSE_ID + id, null);
+        res.moveToFirst();
+
+        while (res.isAfterLast() == false) {
+            subscription.setName(
+                    res.getString(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_NAME
+                            )
+                    )
+            );
+
+            subscription.setFavicon(
+                    res.getString(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_FAVICON
+                            )
+                    )
+            );
+
+            subscription.setDescription(
+                    res.getString(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_DESCRIPTION
+                            )
+                    )
+            );
+
+            subscription.setId(
+                    res.getInt(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_ID
+                            )
+                    )
+            );
+
+            subscription.setUpdatedAt(
+                    res.getString(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_UPDATED_AT
+                            )
+                    )
+            );
+
+            subscription.setUrl(
+                    res.getString(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_URL
+                            )
+                    )
+            );
+
+            subscription.setRss(
+                    res.getString(
+                            res.getColumnIndex(
+                                    SubscriptionsTableConstants.COLUMN_NAME_RSS
+                            )
+                    )
+            );
+
+            res.moveToNext();
+        }
+
+        return subscription;
     }
 }

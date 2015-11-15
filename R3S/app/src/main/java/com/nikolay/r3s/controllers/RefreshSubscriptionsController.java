@@ -5,15 +5,9 @@ import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
-import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.RssHelper;
 import com.nikolay.r3s.utils.SubscriptionItemAdapter;
 
-import java.util.ArrayList;
-
-/**
- * Created by Nikolay on 13-Nov-15.
- */
 public class RefreshSubscriptionsController extends AsyncTask<Boolean, Void, Boolean> {
     private Context context;
     private SubscriptionItemAdapter itemAdapter;

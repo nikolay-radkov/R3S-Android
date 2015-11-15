@@ -28,7 +28,8 @@ import com.nikolay.r3s.utils.SubscriptionItemAdapter;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
         SwipeMenuListView.OnMenuItemClickListener {
     private SubscriptionsTable repository;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        listView = (SwipeMenuListView) this.findViewById(R.id.subscription_list_wiew);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.subscriptions_swipe_container);
+        listView = (SwipeMenuListView) this.findViewById(R.id.subscription_list_view);
         listView.setOnItemClickListener(this);
 
         repository = new SubscriptionsTable(this);
@@ -103,17 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRefresh() {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                ArrayList<Subscription> listData = repository.getAll();
-//                itemAdapter = new SubscriptionItemAdapter(MainActivity.this, R.layout.item_subscription, listData);
-//                listView.setAdapter(itemAdapter);
-//
-//                Toast.makeText(MainActivity.this, "refres", Toast.LENGTH_LONG).show();
-//                mSwipeRefreshLayout.setRefreshing(false);
-//            }
-//        }, 2000);
         RefreshSubscriptionsController refresher = new RefreshSubscriptionsController(MainActivity.this, itemAdapter, mSwipeRefreshLayout);
         refresher.execute();
     }

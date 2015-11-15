@@ -23,4 +23,5 @@ public class SubscriptionsTableConstants {
 
     public final static String DROP_TABLE = DbConstants.DROP_TABLE + TABLE_NAME;
     public final static String GET_DATA = DbConstants.SELECT_ALL_QUERY + TABLE_NAME;
+    public final static String WHERE_CLAUSE_ID = DbConstants.WHERE_CLAUSE + COLUMN_NAME_ID + DbConstants.EQUAL_EXPRESION;
 }
