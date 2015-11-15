@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -19,7 +20,8 @@ import com.nikolay.r3s.utils.SubscriptionItemAdapter;
 import java.util.ArrayList;
 
 public class EntriesActivity extends AppCompatActivity  implements AdapterView.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        AbsListView.OnScrollListener{
     private EntriesTable repository;
     private SwipeRefreshLayout swipeRefreshLayout;
     private EntryItemAdapter itemAdapter;
@@ -45,6 +47,7 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.entries_swipe_container);
         listView = (ListView) this.findViewById(R.id.entries_list_view);
         listView.setOnItemClickListener(this);
+        listView.setOnScrollListener(this);
 
         repository = new EntriesTable(this);
         ArrayList<Entry> listData = repository.getAllBySubscriptionId(subscriptionId);
@@ -66,5 +69,18 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
         RefreshEntriesController refresher = new RefreshEntriesController(EntriesActivity.this,
                 itemAdapter, swipeRefreshLayout, subscriptionId);
         refresher.execute();
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        int topRowVerticalPosition =
+                (listView == null || listView.getChildCount() == 0) ?
+                        0 : listView.getChildAt(0).getTop();
+        swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
     }
 }

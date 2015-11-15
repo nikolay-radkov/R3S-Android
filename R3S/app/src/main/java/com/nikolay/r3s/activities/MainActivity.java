@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -30,11 +31,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-        SwipeMenuListView.OnMenuItemClickListener {
+        SwipeMenuListView.OnMenuItemClickListener,
+        AbsListView.OnScrollListener{
     private SubscriptionsTable repository;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeMenuListView listView;
     private SubscriptionItemAdapter itemAdapter;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayList<Subscription> listData = repository.getAll();
         itemAdapter = new SubscriptionItemAdapter(this, R.layout.item_subscription, listData);
         listView.setAdapter(itemAdapter);
+        listView.setOnScrollListener(this);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -72,6 +76,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         listView.setOnMenuItemClickListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     @Override
@@ -126,5 +149,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemAdapter.remove(itemAdapter.getItem(position));
         itemAdapter.notifyDataSetChanged();
         return true;
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        int topRowVerticalPosition =
+                (listView == null || listView.getChildCount() == 0) ?
+                        0 : listView.getChildAt(0).getTop();
+        mSwipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
     }
 }

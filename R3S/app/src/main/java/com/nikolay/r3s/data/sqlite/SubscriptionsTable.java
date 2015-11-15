@@ -5,10 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.nikolay.r3s.constants.database.EntriesTableConstants;
 import com.nikolay.r3s.constants.database.SubscriptionsTableConstants;
-import com.nikolay.r3s.models.Entry;
-import com.nikolay.r3s.models.IModel;
+
 import com.nikolay.r3s.models.Subscription;
 
 import java.util.ArrayList;

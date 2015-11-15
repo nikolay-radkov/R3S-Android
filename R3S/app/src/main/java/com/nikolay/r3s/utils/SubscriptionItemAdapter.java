@@ -47,10 +47,6 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-//        if (data.get(position).getFavicon() == null) {
-//            viewHolder.postThumbView.setImageResource(R.drawable.error);
-//        }
-
         viewHolder.postTitleView.setTag(data.get(position).getId());
 
         viewHolder.id = data.get(position).getId();
