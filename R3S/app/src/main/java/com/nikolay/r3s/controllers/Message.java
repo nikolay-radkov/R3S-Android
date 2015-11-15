@@ -3,6 +3,7 @@ package com.nikolay.r3s.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
+import android.os.Vibrator;
 
 public class Message {
 
@@ -22,6 +23,8 @@ public class Message {
 					public void run() {
 						Toast.makeText(context, message, Toast.LENGTH_LONG)
 								.show();
+						Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+						v.vibrate(500);
 					}
 				});
 			}

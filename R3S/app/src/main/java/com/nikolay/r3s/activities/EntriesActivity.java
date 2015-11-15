@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -33,6 +34,9 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entries);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
@@ -54,6 +58,17 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
         itemAdapter = new EntryItemAdapter(this, R.layout.item_entry, listData);
         listView.setAdapter(itemAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

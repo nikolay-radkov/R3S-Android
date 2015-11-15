@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
+        fab.setImageResource(R.drawable.ic_subscribe);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.subscriptions_swipe_container);
         listView = (SwipeMenuListView) this.findViewById(R.id.subscription_list_view);
