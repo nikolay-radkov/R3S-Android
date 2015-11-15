@@ -5,15 +5,26 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.nikolay.r3s.R;
+import com.nikolay.r3s.constants.Suggestions;
 import com.nikolay.r3s.controllers.Message;
 import com.nikolay.r3s.controllers.NetworkManager;
+import com.nikolay.r3s.utils.Pair;
 import com.nikolay.r3s.utils.RssHelper;
 
-public class SubscribeActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class SubscribeActivity extends AppCompatActivity implements View.OnClickListener,
+        Spinner.OnItemSelectedListener {
     private EditText rssValue;
+    private Spinner spinner;
+    private String selectedRss = null;
+    private ArrayList<String> keys;
 
     private void goToHome() {
         Intent intent = new Intent(SubscribeActivity.this, MainActivity.class);
@@ -27,24 +38,61 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_subscribe);
         this.rssValue = (EditText) this.findViewById(R.id.txtRss);
         this.findViewById(R.id.btnSubscribe).setOnClickListener(this);
+
+        this.spinner = (Spinner) this.findViewById(R.id.suggestions_spinner);
+        keys = new ArrayList<String>();
+
+        for (Pair pair : Suggestions.list) {
+            keys.add((String)pair.getKey());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>( this, android.R.layout.simple_spinner_item, keys);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     @Override
     public void onClick(View v) {
         boolean isConnectedToNetwork = NetworkManager.checkNetworkConnection(this.getApplication());
+        Message message = new Message(SubscribeActivity.this);
 
         if (isConnectedToNetwork) {
             switch (v.getId()) {
                 case R.id.btnSubscribe:
                     String rssUrl = this.rssValue.getText().toString();
 
+                    if (rssUrl.trim().length() == 0) {
+                        if (this.selectedRss != null) {
+                            rssUrl = this.selectedRss;
+                        } else {
+                            message.print("Please select or enter RSS");
+                            break;
+                        }
+                    }
+
                     DownloadRssTask downloadRssTask = new DownloadRssTask();
                     downloadRssTask.execute(rssUrl);
                     break;
             }
         } else {
-            // TODO: show toast
+            message.print("No internet connection");
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (position != 0) {
+            this.selectedRss = Suggestions.list[position].getValue();
+        } else {
+            this.selectedRss = null;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        this.selectedRss = null;
     }
 
     private class DownloadRssTask extends AsyncTask<String, Integer, Boolean> {
