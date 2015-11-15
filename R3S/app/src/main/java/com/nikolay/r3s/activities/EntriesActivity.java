@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.nikolay.r3s.R;
+import com.nikolay.r3s.controllers.Message;
+import com.nikolay.r3s.controllers.NetworkManager;
 import com.nikolay.r3s.controllers.RefreshEntriesController;
 import com.nikolay.r3s.controllers.RefreshSubscriptionsController;
 import com.nikolay.r3s.data.sqlite.EntriesTable;
@@ -28,6 +30,7 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
     private EntryItemAdapter itemAdapter;
     private ListView listView;
     private Integer subscriptionId = 0;
+    private String toolbarTitle = "Entries";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +46,14 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
                 subscriptionId = null;
             } else {
                 subscriptionId = extras.getInt("SUBSCRIPTION_ID");
+                toolbarTitle = extras.getString("SUBSCRIPTION_NAME");
             }
         } else {
             subscriptionId = (Integer) savedInstanceState.getSerializable("SUBSCRIPTION_ID");
+            toolbarTitle = (String) savedInstanceState.getSerializable("SUBSCRIPTION_NAME");
         }
+
+        getSupportActionBar().setTitle(toolbarTitle);
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.entries_swipe_container);
         listView = (ListView) this.findViewById(R.id.entries_list_view);
@@ -74,16 +81,27 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(EntriesActivity.this, EntryInfoActivity.class);
-        int entryId = (int)view.findViewById(R.id.lblEntryTitle).getTag();
+        int entryId = itemAdapter.getItem(position).getId();
+        String entryTitle = itemAdapter.getItem(position).getTitle();
+
         intent.putExtra("ENTRY_ID", entryId);
+        intent.putExtra("ENTRY_TITLE", entryTitle);
         startActivity(intent);
     }
 
     @Override
     public void onRefresh() {
-        RefreshEntriesController refresher = new RefreshEntriesController(EntriesActivity.this,
-                itemAdapter, swipeRefreshLayout, subscriptionId);
-        refresher.execute();
+        boolean isConnectedToNetwork = NetworkManager.checkNetworkConnection(this.getApplication());
+        Message message = new Message(EntriesActivity.this);
+
+        if (isConnectedToNetwork) {
+            RefreshEntriesController refresher = new RefreshEntriesController(EntriesActivity.this,
+                    itemAdapter, swipeRefreshLayout, subscriptionId);
+            refresher.execute();
+        } else {
+            message.print("No internet connection");
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.nikolay.r3s.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +24,8 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.nikolay.r3s.R;
+import com.nikolay.r3s.controllers.Message;
+import com.nikolay.r3s.controllers.NetworkManager;
 import com.nikolay.r3s.controllers.RefreshSubscriptionsController;
 import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
 import com.nikolay.r3s.models.Subscription;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_subscriptions);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Subscriptions");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -66,16 +71,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void create(SwipeMenu menu) {
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
-                deleteItem.setWidth(90);
-                deleteItem.setIcon(R.drawable.com_facebook_close);
+                deleteItem.setWidth(120);
+                deleteItem.setIcon(R.mipmap.ic_trash);
                 menu.addMenuItem(deleteItem);
             }
         };
 
-
         listView.setMenuCreator(creator);
 
-        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
         listView.setOnMenuItemClickListener(this);
     }
 
@@ -128,27 +132,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRefresh() {
-        RefreshSubscriptionsController refresher = new RefreshSubscriptionsController(MainActivity.this, itemAdapter, mSwipeRefreshLayout);
-        refresher.execute();
+        boolean isConnectedToNetwork = NetworkManager.checkNetworkConnection(this.getApplication());
+        Message message = new Message(MainActivity.this);
+
+        if (isConnectedToNetwork) {
+            RefreshSubscriptionsController refresher = new RefreshSubscriptionsController(MainActivity.this, itemAdapter, mSwipeRefreshLayout);
+            refresher.execute();
+        } else {
+            message.print("No internet connection");
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int subscriptionId = 0;
-
         Intent intent = new Intent(MainActivity.this, EntriesActivity.class);
-        subscriptionId = (int) view.findViewById(R.id.postTitleLabel).getTag();
+        int subscriptionId = itemAdapter.getItem(position).getId();
+        String subscriptionName = itemAdapter.getItem(position).getName();
+
         intent.putExtra("SUBSCRIPTION_ID", subscriptionId);
+        intent.putExtra("SUBSCRIPTION_NAME", subscriptionName);
         startActivity(intent);
     }
 
     @Override
     public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+        final int itemPosition = position;
 
-        int subscriptionId = itemAdapter.getItem(position).getId();
-        repository.delete(subscriptionId);
-        itemAdapter.remove(itemAdapter.getItem(position));
-        itemAdapter.notifyDataSetChanged();
+        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+        alert.setTitle("Deleting item");
+        alert.setMessage("Are you sure you want to delete this RSS");
+        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int subscriptionId = itemAdapter.getItem(itemPosition).getId();
+                int result = repository.delete(subscriptionId);
+                Message message = new Message(MainActivity.this);
+
+                if (result == 0) {
+                    message.print("Cannot delete the RSS");
+                    return;
+                }
+
+                itemAdapter.remove(itemAdapter.getItem(itemPosition));
+                itemAdapter.notifyDataSetChanged();
+                message.print("RSS deleted successfully");
+
+                dialog.dismiss();
+            }
+        });
+        alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alert.show();
         return true;
     }
 

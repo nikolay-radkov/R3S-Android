@@ -38,8 +38,6 @@ public class EntryItemAdapter extends ArrayAdapter<Entry> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.entryTitleView.setTag(data.get(position).getId());
-
         viewHolder.entryTitleView.setText(data.get(position).getTitle());
         viewHolder.entryDateView.setText(data.get(position).getCreatedAt());
 

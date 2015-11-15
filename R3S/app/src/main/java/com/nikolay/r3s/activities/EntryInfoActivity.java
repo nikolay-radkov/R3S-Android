@@ -33,6 +33,7 @@ public class EntryInfoActivity extends AppCompatActivity
     private Entry entry;
     private ShareDialog shareDialog;
     private CallbackManager callbackManager;
+    private String toolbarTitle = "Entry info";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,14 @@ public class EntryInfoActivity extends AppCompatActivity
                 entryId = 0;
             } else {
                 entryId = extras.getInt("ENTRY_ID");
+                toolbarTitle = extras.getString("ENTRY_TITLE");
             }
         } else {
             entryId = (int) savedInstanceState.getSerializable("ENTRY_ID");
+            toolbarTitle = (String) savedInstanceState.getSerializable("ENTRY_TITLE");
         }
+
+        getSupportActionBar().setTitle(toolbarTitle);
 
         EntriesTable repository = new EntriesTable(this);
         this.entry = repository.getById(entryId);

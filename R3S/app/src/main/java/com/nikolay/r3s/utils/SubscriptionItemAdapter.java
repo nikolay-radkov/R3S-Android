@@ -47,9 +47,6 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.postTitleView.setTag(data.get(position).getId());
-
-        viewHolder.id = data.get(position).getId();
         viewHolder.postTitleView.setText(data.get(position).getName());
         viewHolder.postDateView.setText(data.get(position).getUpdatedAt());
 
@@ -60,7 +57,6 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
     }
 
     static class ViewHolder {
-        int id;
         String imageURL;
         TextView postTitleView;
         TextView postDateView;
