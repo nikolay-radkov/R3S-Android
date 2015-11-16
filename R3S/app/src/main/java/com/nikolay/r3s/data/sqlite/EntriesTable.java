@@ -2,6 +2,7 @@ package com.nikolay.r3s.data.sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -28,6 +29,8 @@ public class EntriesTable extends DbTable {
 
         SQLiteDatabase db = this.sqLiteHelper.getWritableDatabase();
         db.insert(EntriesTableConstants.TABLE_NAME, null, contentValues);
+
+
         return true;
     }
     public boolean update(Entry entry) {
@@ -44,14 +47,19 @@ public class EntriesTable extends DbTable {
                 contentValues,
                 "id = ? ",
                 new String[]{Integer.toString(id)});
+
+
         return true;
     }
 
     public Integer delete(Integer id) {
         SQLiteDatabase db = this.sqLiteHelper.getWritableDatabase();
-        return db.delete(EntriesTableConstants.TABLE_NAME,
+        Integer result = db.delete(EntriesTableConstants.TABLE_NAME,
                 "id = ? ",
                 new String[]{Integer.toString(id)});
+
+
+        return result;
     }
 
     public ArrayList<Entry> getAllBySubscriptionId(Integer id) {
@@ -116,6 +124,7 @@ public class EntriesTable extends DbTable {
             res.moveToNext();
         }
 
+
         return entries;
     }
 
@@ -170,14 +179,19 @@ public class EntriesTable extends DbTable {
             res.moveToNext();
         }
 
+
         return entry;
     }
 
 
     public Integer deleteAllBySubscriptionId(int id) {
         SQLiteDatabase db = this.sqLiteHelper.getWritableDatabase();
-        return db.delete(EntriesTableConstants.TABLE_NAME,
+        Integer result = db.delete(EntriesTableConstants.TABLE_NAME,
                 "subscriptionId = ? ",
                 new String[]{Integer.toString(id)});
+
+
+
+        return result;
     }
 }

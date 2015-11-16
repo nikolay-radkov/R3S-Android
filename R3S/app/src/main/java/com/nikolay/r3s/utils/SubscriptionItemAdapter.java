@@ -41,6 +41,7 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
             viewHolder = new ViewHolder();
             viewHolder.postThumbView = (ImageView) convertView.findViewById(R.id.postThumb);
             viewHolder.postTitleView = (TextView) convertView.findViewById(R.id.postTitleLabel);
+            viewHolder.postUrlLabel = (TextView) convertView.findViewById(R.id.postUrlLabel);
             viewHolder.postDateView = (TextView) convertView.findViewById(R.id.postDateLabel);
             convertView.setTag(viewHolder);
         } else {
@@ -49,6 +50,7 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
 
         viewHolder.postTitleView.setText(data.get(position).getName());
         viewHolder.postDateView.setText(data.get(position).getUpdatedAt());
+        viewHolder.postUrlLabel.setText(data.get(position).getRss());
 
         viewHolder.imageURL = data.get(position).getFavicon();
         new DownloadImageTask(viewHolder.postThumbView).execute(data.get(position).getFavicon());
@@ -60,10 +62,11 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
         String imageURL;
         TextView postTitleView;
         TextView postDateView;
+        TextView postUrlLabel;
         ImageView postThumbView;
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private class DownloadImageTask extends AsyncTask<String, Integer, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {

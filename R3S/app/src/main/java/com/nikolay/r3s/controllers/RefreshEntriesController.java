@@ -11,7 +11,7 @@ import com.nikolay.r3s.utils.EntryItemAdapter;
 import com.nikolay.r3s.utils.RssHelper;
 import com.nikolay.r3s.utils.SubscriptionItemAdapter;
 
-public class RefreshEntriesController extends AsyncTask<Boolean, Void, Boolean> {
+public class RefreshEntriesController extends AsyncTask<Boolean, Integer, Boolean> {
     private Context context;
     private EntryItemAdapter itemAdapter;
     private EntriesTable table;

@@ -39,9 +39,10 @@ public class SubscriptionsTable extends DbTable{
 
         SQLiteDatabase db = this.sqLiteHelper.getWritableDatabase();
         int id = (int)db.insert(SubscriptionsTableConstants.TABLE_NAME, null, contentValues);
+
+
         return id;
     }
-
 
     public boolean update(Subscription subscription) {
         ContentValues contentValues = new ContentValues();
@@ -58,14 +59,19 @@ public class SubscriptionsTable extends DbTable{
                 contentValues,
                 "id = ? ",
                 new String[]{Integer.toString(id)});
+
+
         return true;
     }
 
     public Integer delete(Integer id) {
         SQLiteDatabase db = this.sqLiteHelper.getWritableDatabase();
-        return db.delete(SubscriptionsTableConstants.TABLE_NAME,
+        Integer result = db.delete(SubscriptionsTableConstants.TABLE_NAME,
                 "id = ? ",
                 new String[]{Integer.toString(id)});
+
+
+        return result;
     }
 
     public ArrayList<Subscription> getAll() {
@@ -138,6 +144,7 @@ public class SubscriptionsTable extends DbTable{
             res.moveToNext();
         }
 
+
         return subscriptions;
     }
 
@@ -208,6 +215,7 @@ public class SubscriptionsTable extends DbTable{
 
             res.moveToNext();
         }
+
 
         return subscription;
     }

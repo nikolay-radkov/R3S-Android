@@ -8,7 +8,7 @@ import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
 import com.nikolay.r3s.utils.RssHelper;
 import com.nikolay.r3s.utils.SubscriptionItemAdapter;
 
-public class RefreshSubscriptionsController extends AsyncTask<Boolean, Void, Boolean> {
+public class RefreshSubscriptionsController extends AsyncTask<Boolean, Integer, Boolean> {
     private Context context;
     private SubscriptionItemAdapter itemAdapter;
     private SubscriptionsTable table;
@@ -34,7 +34,7 @@ public class RefreshSubscriptionsController extends AsyncTask<Boolean, Void, Boo
         itemAdapter.notifyDataSetChanged();
         Message message = new Message(this.context);
         if (result) {
-            message.print("Refreshed");
+            message.print("Subscriptions were refreshed");
         } else {
             message.print("Not all RSS have been refreshed");
         }

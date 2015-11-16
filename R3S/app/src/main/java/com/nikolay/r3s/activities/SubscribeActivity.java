@@ -1,5 +1,6 @@
 package com.nikolay.r3s.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.nikolay.r3s.R;
@@ -26,11 +28,12 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
     private Spinner spinner;
     private String selectedRss = null;
     private ArrayList<String> keys;
+   // private RelativeLayout loader;
 
     private void goToHome() {
-        Intent intent = new Intent(SubscribeActivity.this, MainActivity.class);
-        startActivity(intent);
-        this.finish();
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 
     @Override
@@ -42,6 +45,7 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+   //     this.loader = (RelativeLayout) this.findViewById(R.id.loading_panel);
         this.rssValue = (EditText) this.findViewById(R.id.txtRss);
         this.findViewById(R.id.btnSubscribe).setOnClickListener(this);
 
@@ -63,7 +67,7 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                goToHome();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -89,6 +93,7 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
 
+   //                 loader.setVisibility(View.VISIBLE);
                     DownloadRssTask downloadRssTask = new DownloadRssTask();
                     downloadRssTask.execute(rssUrl);
                     break;
@@ -136,6 +141,8 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
             } else {
                 message.print("Cannot download the RSS");
             }
+
+//            loader.setVisibility(View.GONE);
         }
     }
 }

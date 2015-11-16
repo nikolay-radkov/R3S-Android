@@ -4,14 +4,14 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="5dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp">
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/postThumb"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginRight="5dp"
         android:scaleType="centerCrop"
         android:src="@drawable/error" />
@@ -24,19 +24,31 @@
         android:layout_alignTop="@id/postThumb"
         android:layout_toRightOf="@id/postThumb"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:maxLines="1"
         android:text="This is a good Post, I hope it will have 2 lines. Please give me 2 lines"
         android:textIsSelectable="false"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/postDateLabel"
-        android:layout_width="0dp"
+        android:id="@+id/postUrlLabel"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/postThumb"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/postThumb"
+        android:layout_below="@+id/postTitleLabel"
+        android:layout_alignLeft="@+id/postThumb"
+        android:layout_alignStart="@+id/postThumb"
         android:maxLines="1"
-        android:text="April 12, 2013"
-        android:textSize="12sp" />
+        android:gravity="center"
+        android:text="http://www.rss.com"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="July 1, 2015"
+        android:id="@+id/postDateLabel"
+        android:layout_below="@+id/postUrlLabel"
+        android:layout_alignLeft="@+id/postThumb"
+        android:layout_alignStart="@+id/postThumb"
+        android:gravity="center"
+        android:textSize="12sp"/>
 </RelativeLayout>

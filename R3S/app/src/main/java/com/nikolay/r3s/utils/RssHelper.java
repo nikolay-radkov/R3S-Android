@@ -9,6 +9,7 @@ import com.nikolay.r3s.models.Subscription;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RssHelper {
     public static boolean load(Context context, String url) {
@@ -22,6 +23,7 @@ public class RssHelper {
                 EntriesTable entries = new EntriesTable(context);
 
                 subscription.setRss(url);
+                subscription.setUpdatedAt(new Date().toString());
                 int subscriptionId = subscriptions.insert(subscription);
 
                 for (Entry entry : subscription.getEntries()) {
@@ -49,6 +51,7 @@ public class RssHelper {
 
                 subscription.setRss(url);
                 subscription.setId(id);
+                subscription.setUpdatedAt(new Date().toString());
                 subscriptions.update(subscription);
 
                 entries.deleteAllBySubscriptionId(id);

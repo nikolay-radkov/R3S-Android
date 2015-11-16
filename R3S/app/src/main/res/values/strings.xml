@@ -102,4 +102,6 @@
     <string name="head_arrowImage">Pull down to refresh...</string>
     <string name="facebook_share">Share</string>
     <string name="title_activity_main_activityfsd">MainActivityfsd</string>
+    <string name="title_activity_main_activitynbmb">MainActivitynbmb</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
