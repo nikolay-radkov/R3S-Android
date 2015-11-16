@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
                 ArrayList<Subscription> listData = repository.getAll();
-                itemAdapter = new SubscriptionItemAdapter(this, R.layout.item_subscription, listData);
                 itemAdapter.clear();
                 itemAdapter.addAll(listData);
                 itemAdapter.notifyDataSetChanged();

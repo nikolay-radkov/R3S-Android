@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -28,7 +29,7 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
     private Spinner spinner;
     private String selectedRss = null;
     private ArrayList<String> keys;
-   // private RelativeLayout loader;
+    private ProgressBar loader;
 
     private void goToHome() {
         Intent returnIntent = new Intent();
@@ -45,7 +46,7 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-   //     this.loader = (RelativeLayout) this.findViewById(R.id.loading_panel);
+        this.loader = (ProgressBar) this.findViewById(R.id.loading_panel);
         this.rssValue = (EditText) this.findViewById(R.id.txtRss);
         this.findViewById(R.id.btnSubscribe).setOnClickListener(this);
 
@@ -93,7 +94,7 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
 
-   //                 loader.setVisibility(View.VISIBLE);
+                    loader.setVisibility(View.VISIBLE);
                     DownloadRssTask downloadRssTask = new DownloadRssTask();
                     downloadRssTask.execute(rssUrl);
                     break;
@@ -142,7 +143,7 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
                 message.print("Cannot download the RSS");
             }
 
-//            loader.setVisibility(View.GONE);
+            loader.setVisibility(View.GONE);
         }
     }
 }

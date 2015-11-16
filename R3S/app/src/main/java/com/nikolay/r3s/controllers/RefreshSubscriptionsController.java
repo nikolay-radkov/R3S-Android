@@ -5,8 +5,11 @@ import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
+import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.RssHelper;
 import com.nikolay.r3s.utils.SubscriptionItemAdapter;
+
+import java.util.ArrayList;
 
 public class RefreshSubscriptionsController extends AsyncTask<Boolean, Integer, Boolean> {
     private Context context;
@@ -31,6 +34,9 @@ public class RefreshSubscriptionsController extends AsyncTask<Boolean, Integer, 
 
     @Override
     protected void onPostExecute(Boolean result) {
+        ArrayList<Subscription> listData = table.getAll();
+        itemAdapter.clear();
+        itemAdapter.addAll(listData);
         itemAdapter.notifyDataSetChanged();
         Message message = new Message(this.context);
         if (result) {

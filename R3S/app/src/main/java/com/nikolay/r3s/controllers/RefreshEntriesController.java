@@ -6,10 +6,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.nikolay.r3s.data.sqlite.EntriesTable;
 import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
+import com.nikolay.r3s.models.Entry;
 import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.EntryItemAdapter;
 import com.nikolay.r3s.utils.RssHelper;
 import com.nikolay.r3s.utils.SubscriptionItemAdapter;
+
+import java.util.ArrayList;
 
 public class RefreshEntriesController extends AsyncTask<Boolean, Integer, Boolean> {
     private Context context;
@@ -41,6 +44,9 @@ public class RefreshEntriesController extends AsyncTask<Boolean, Integer, Boolea
 
     @Override
     protected void onPostExecute(Boolean result) {
+        ArrayList<Entry> listData = table.getAllBySubscriptionId(this.subscriptionId);
+        itemAdapter.clear();
+        itemAdapter.addAll(listData);
         itemAdapter.notifyDataSetChanged();
         Message message = new Message(this.context);
         if (result) {
