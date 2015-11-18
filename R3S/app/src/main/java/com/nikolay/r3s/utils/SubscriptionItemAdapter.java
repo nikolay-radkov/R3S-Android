@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
     private Activity myContext;
     private ArrayList<Subscription> data;
+    private int[] colors = new int[] { 0x30EADB0B, 0x30F5EF0D };
 
     public SubscriptionItemAdapter(Context context, int textViewResourceId, ArrayList<Subscription> objects) {
         super(context, textViewResourceId, objects);
@@ -51,6 +52,9 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
         viewHolder.postTitleView.setText(data.get(position).getName());
         viewHolder.postDateView.setText(data.get(position).getUpdatedAt());
         viewHolder.postUrlLabel.setText(data.get(position).getRss());
+
+        int colorPos = position % colors.length;
+        convertView.setBackgroundColor(colors[colorPos]);
 
         viewHolder.imageURL = data.get(position).getFavicon();
         new DownloadImageTask(viewHolder.postThumbView).execute(data.get(position).getFavicon());

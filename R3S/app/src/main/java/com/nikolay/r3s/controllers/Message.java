@@ -24,7 +24,7 @@ public class Message {
 						Toast.makeText(context, message, Toast.LENGTH_LONG)
 								.show();
 						Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-						//v.vibrate(500);
+						v.vibrate(500);
 					}
 				});
 			}

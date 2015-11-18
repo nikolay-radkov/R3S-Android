@@ -80,12 +80,10 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(EntriesActivity.this, EntryInfoActivity.class);
-        int entryId = itemAdapter.getItem(position).getId();
-        String entryTitle = itemAdapter.getItem(position).getTitle();
+        Intent intent = new Intent(EntriesActivity.this, ContentActivity.class);
 
-        intent.putExtra("ENTRY_ID", entryId);
-        intent.putExtra("ENTRY_TITLE", entryTitle);
+        intent.putExtra("POSITION", position);
+        intent.putExtra("SUBSCRIPTION_ID", subscriptionId);
         startActivity(intent);
     }
 
