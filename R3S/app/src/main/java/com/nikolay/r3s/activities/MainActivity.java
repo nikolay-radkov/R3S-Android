@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -27,6 +31,7 @@ import com.nikolay.r3s.R;
 import com.nikolay.r3s.controllers.Message;
 import com.nikolay.r3s.controllers.NetworkManager;
 import com.nikolay.r3s.controllers.RefreshSubscriptionsController;
+import com.nikolay.r3s.controllers.ShakeManager;
 import com.nikolay.r3s.data.sqlite.SubscriptionsTable;
 import com.nikolay.r3s.models.Subscription;
 import com.nikolay.r3s.utils.SubscriptionItemAdapter;
@@ -36,12 +41,17 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
         SwipeMenuListView.OnMenuItemClickListener,
-        AbsListView.OnScrollListener{
+        AbsListView.OnScrollListener {
     private SubscriptionsTable repository;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeMenuListView listView;
     private SubscriptionItemAdapter itemAdapter;
     private boolean doubleBackToExitPressedOnce = false;
+    private ShakeManager shakeManager;
+
+    public MainActivity() {
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         listView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
         listView.setOnMenuItemClickListener(this);
+
+        shakeManager = new ShakeManager(MainActivity.this, mSwipeRefreshLayout);
     }
 
     @Override
@@ -157,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             message.print("No internet connection");
             mSwipeRefreshLayout.setRefreshing(false);
+
         }
     }
 
@@ -221,5 +234,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 (listView == null || listView.getChildCount() == 0) ?
                         0 : listView.getChildAt(0).getTop();
         mSwipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        shakeManager.registerListener();
+    }
+
+    @Override
+    protected void onPause() {
+        shakeManager.removeListener();
+        super.onPause();
     }
 }

@@ -15,6 +15,7 @@ import com.nikolay.r3s.controllers.Message;
 import com.nikolay.r3s.controllers.NetworkManager;
 import com.nikolay.r3s.controllers.RefreshEntriesController;
 import com.nikolay.r3s.controllers.RefreshSubscriptionsController;
+import com.nikolay.r3s.controllers.ShakeManager;
 import com.nikolay.r3s.data.sqlite.EntriesTable;
 import com.nikolay.r3s.models.Entry;
 import com.nikolay.r3s.utils.EntryItemAdapter;
@@ -31,6 +32,7 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
     private ListView listView;
     private Integer subscriptionId = 0;
     private String toolbarTitle = "Entries";
+    private ShakeManager shakeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
         itemAdapter = new EntryItemAdapter(this, R.layout.item_entry, listData);
         listView.setAdapter(itemAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        shakeManager = new ShakeManager(EntriesActivity.this, swipeRefreshLayout);
     }
 
     @Override
@@ -113,5 +117,17 @@ public class EntriesActivity extends AppCompatActivity  implements AdapterView.O
                 (listView == null || listView.getChildCount() == 0) ?
                         0 : listView.getChildAt(0).getTop();
         swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        shakeManager.registerListener();
+    }
+
+    @Override
+    protected void onPause() {
+        shakeManager.removeListener();
+        super.onPause();
     }
 }
