@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void create(SwipeMenu menu) {
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
-                deleteItem.setWidth(120);
+                deleteItem.setWidth(200);
                 deleteItem.setIcon(R.mipmap.ic_trash);
                 menu.addMenuItem(deleteItem);
             }

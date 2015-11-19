@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.nikolay.r3s.MainActivity">
+    tools:context="com.nikolay.r3s.MainActivity"
+    android:background="#d4d4d4">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -31,6 +32,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:scaleType="center"
         android:src="@android:drawable/ic_dialog_email"
-        app:backgroundTint="#fcca05" />
+        app:backgroundTint="#3f3f3f" />
 
 </android.support.design.widget.CoordinatorLayout>

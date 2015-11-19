@@ -12,6 +12,7 @@ public class HttpHelper {
     public static InputStream getRequestStream(String urlStr) {
         InputStream is = null;
         try {
+            urlStr = "http://" + urlStr;
             URL url = new URL(urlStr);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setReadTimeout(10 * 1000);

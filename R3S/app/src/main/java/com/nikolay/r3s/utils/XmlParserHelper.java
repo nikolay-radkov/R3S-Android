@@ -1,7 +1,5 @@
 package com.nikolay.r3s.utils;
 
-import android.util.Log;
-
 import com.nikolay.r3s.constants.RSSXMLTags;
 import com.nikolay.r3s.models.Entry;
 import com.nikolay.r3s.models.Subscription;
@@ -13,9 +11,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class XmlParserHelper {
     private static RSSXMLTags currentTag;
@@ -67,46 +62,25 @@ public class XmlParserHelper {
                 } else if (eventType == XmlPullParser.TEXT) {
                     String content = xpp.getText();
                     content = content.trim();
-                    Log.d("debug", content);
+
                     if (currentTag != RSSXMLTags.IGNORETAG && currentTag != null) {
                         if (isInEntry == true) {
                             switch (currentTag) {
                                 case TITLE:
                                     if (content.length() != 0) {
-//                                    if (entry.getTitle() != null) {
-//                                        entry.setTitle(entry.getTitle() + content);
-//                                    } else {
                                         entry.setTitle(content);
-//                                    }
                                     }
                                     break;
                                 case LINK:
                                     if (content.length() != 0) {
-//                                    if (entry.getLink() != null) {
-//                                        entry.setLink(entry.getLink() + content);
-//                                    } else {
                                         entry.setLink(content);
-//                                    }
                                     }
                                     break;
                                 case DATE:
                                     if (content.length() != 0) {
-//                                    if (entry.getCreatedAt() != null) {
-//                                        entry.setCreatedAt(entry.getCreatedAt() + content);
-//                                    } else {
                                         entry.setCreatedAt(content);
-//                                    }
                                     }
                                     break;
-//                                case DESCRIPTION:
-//                                    if (content.length() != 0) {
-//                                        if (entry.getContent() != null) {
-//                                            entry.setContent(entry.getContent() + content);
-//                                        } else {
-//                                            entry.setContent(content);
-//                                        }
-//                                    }
-//                                    break;
                                 default:
                                     break;
                             }
@@ -115,38 +89,22 @@ public class XmlParserHelper {
                                 switch (currentTag) {
                                     case TITLE:
                                         if (content.length() != 0) {
-//                                        if (subscription.getName() != null) {
-//                                            subscription.setName(subscription.getName() + content);
-//                                        } else {
                                             subscription.setName(content);
-//                                        }
                                         }
                                         break;
                                     case LINK:
                                         if (content.length() != 0) {
-//                                        if (subscription.getUrl() != null) {
-//                                            subscription.setUrl(subscription.getUrl() + content);
-//                                        } else {
                                             subscription.setUrl(content);
-//                                        }
                                         }
                                         break;
                                     case DESCRIPTION:
                                         if (content.length() != 0) {
-//                                        if (subscription.getDescription() != null) {
-//                                            subscription.setDescription(subscription.getDescription() + content);
-//                                        } else {
                                             subscription.setDescription(content);
-//                                        }
                                         }
                                         break;
                                     case URL:
                                         if (content.length() != 0) {
-//                                        if (subscription.getFavicon() != null) {
-//                                            subscription.setFavicon(subscription.getFavicon() + content);
-//                                        } else {
                                             subscription.setFavicon(content);
-//                                        }
                                         }
                                         break;
                                     default:

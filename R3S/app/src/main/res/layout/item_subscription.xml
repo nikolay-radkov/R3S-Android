@@ -27,7 +27,7 @@
         android:maxLines="1"
         android:text="This is a good Post, I hope it will have 2 lines. Please give me 2 lines"
         android:textIsSelectable="false"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/postUrlLabel"
@@ -39,7 +39,8 @@
         android:maxLines="1"
         android:gravity="center"
         android:text="http://www.rss.com"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:layout_width="fill_parent"

@@ -2,9 +2,11 @@ package com.nikolay.r3s.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +26,6 @@ import java.util.ArrayList;
 public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
     private Activity myContext;
     private ArrayList<Subscription> data;
-    private int[] colors = new int[] { 0x30EADB0B, 0x30F5EF0D };
 
     public SubscriptionItemAdapter(Context context, int textViewResourceId, ArrayList<Subscription> objects) {
         super(context, textViewResourceId, objects);
@@ -53,8 +54,13 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
         viewHolder.postDateView.setText(data.get(position).getUpdatedAt());
         viewHolder.postUrlLabel.setText(data.get(position).getRss());
 
-        int colorPos = position % colors.length;
-        convertView.setBackgroundColor(colors[colorPos]);
+        int background = R.color.colorOdd;
+
+        if (position % 2 == 0) {
+            background = R.color.colorEven;
+        }
+
+        convertView.setBackgroundColor(ContextCompat.getColor(myContext, background));
 
         viewHolder.imageURL = data.get(position).getFavicon();
         new DownloadImageTask(viewHolder.postThumbView).execute(data.get(position).getFavicon());

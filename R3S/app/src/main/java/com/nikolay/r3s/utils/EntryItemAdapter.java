@@ -2,6 +2,7 @@ package com.nikolay.r3s.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,14 @@ public class EntryItemAdapter extends ArrayAdapter<Entry> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        int background = R.color.colorOdd;
+
+        if (position % 2 == 0) {
+            background = R.color.colorEven;
+        }
+
+        convertView.setBackgroundColor(ContextCompat.getColor(myContext, background));
 
         viewHolder.entryTitleView.setText(data.get(position).getTitle());
         viewHolder.entryDateView.setText(data.get(position).getCreatedAt());
