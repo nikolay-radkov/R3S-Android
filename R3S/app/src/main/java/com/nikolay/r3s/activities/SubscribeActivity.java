@@ -121,9 +121,15 @@ public class SubscribeActivity extends AppCompatActivity implements View.OnClick
     private class DownloadRssTask extends AsyncTask<String, Integer, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            String rssUrl = params[0];
+            String rssUrl = "http://" + params[0];
 
             boolean isSuccessful = RssHelper.load(SubscribeActivity.this, rssUrl);
+
+            if (!isSuccessful) {
+                rssUrl = "https://" + params[0];
+                isSuccessful = RssHelper.load(SubscribeActivity.this, rssUrl);
+            }
+
             if (isSuccessful) {
                 return true;
             }

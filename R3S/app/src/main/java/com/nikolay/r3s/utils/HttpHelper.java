@@ -31,19 +31,12 @@ public class HttpHelper {
 
 
     public static InputStream getRequestStream(String urlStr) {
-        String rssUrl =  "http://" + urlStr;
         InputStream is = null;
 
         try {
-            is = makeRequest(rssUrl);
+            is = makeRequest(urlStr);
         } catch (IOException e) {
-            try{
-            rssUrl =  "https://" + urlStr;
-            is = makeRequest(rssUrl);;
-
-            } catch (IOException er) {
-                er.printStackTrace();
-            }
+            e.printStackTrace();
         }
 
         return is;
