@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.nikolay.r3s.R;
 import com.nikolay.r3s.controllers.NetworkManager;
 import com.nikolay.r3s.utils.RssHelper;
 
 public class SplashScreen extends Activity {
+    private ProgressBar loader;
+
     private void goToHome() {
         Intent intent = new Intent(SplashScreen.this, MainActivity.class);
         startActivity(intent);
@@ -21,6 +25,8 @@ public class SplashScreen extends Activity {
         setContentView(R.layout.splash_screen);
 
         boolean isConnectedToNetwork = NetworkManager.checkNetworkConnection(this.getApplication());
+        this.loader = (ProgressBar) this.findViewById(R.id.splash_loading);
+        loader.setVisibility(View.VISIBLE);
 
         if (isConnectedToNetwork) {
             UpdateDataTask updateDataTask = new UpdateDataTask();
@@ -59,6 +65,7 @@ public class SplashScreen extends Activity {
 
         @Override
         protected void onPostExecute(Boolean result) {
+            loader.setVisibility(View.GONE);
             goToHome();
         }
     }

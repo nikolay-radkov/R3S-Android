@@ -3,6 +3,6 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#020202</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorOdd">#d4d4d4</color>
-    <color name="colorEven">#fafafa</color>
+    <color name="colorBackground">#d4d4d4</color>
+    <color name="colorItem">#fafafa</color>
 </resources>

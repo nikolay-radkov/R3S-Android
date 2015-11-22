@@ -5,6 +5,8 @@ import com.nikolay.r3s.utils.Pair;
 public class Suggestions {
     public static Pair list[] = new Pair[]{
              new Pair("Select suggested RSS", "Initial State"),
+             new Pair("GameSpot Image Galleries", "www.gamespot.com/feeds/image-galleries"),
+             new Pair("GameSpot Videos", "www.gamespot.com/feeds/video"),
              new Pair("CNN.com", "rss.cnn.com/rss/cnn_topstories.rss"),
              new Pair("New York Times Home Page", "feeds.nytimes.com/nyt/rss/HomePage"),
              new Pair("USATODAY.com News - Top Stories", "rssfeeds.usatoday.com/usatoday-NewsTopStories"),

@@ -82,14 +82,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
                 deleteItem.setWidth(200);
-                deleteItem.setIcon(R.mipmap.ic_trash);
+                deleteItem.setTitle("Delete");
+                deleteItem.setTitleSize(20);
+                deleteItem.setTitleColor(R.color.colorItem);
+                deleteItem.setIcon(R.mipmap.ic_delete_1);
                 menu.addMenuItem(deleteItem);
             }
         };
 
         listView.setMenuCreator(creator);
 
-        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         listView.setOnMenuItemClickListener(this);
 
         shakeManager = new ShakeManager(MainActivity.this, mSwipeRefreshLayout);

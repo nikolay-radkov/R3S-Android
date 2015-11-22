@@ -5,8 +5,10 @@
     android:layout_width="fill_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content"
+    android:paddingBottom="5dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
+    android:paddingTop="5dp"
     >
     <TextView
         android:id="@+id/lblEntryTitle"
@@ -17,7 +19,8 @@
         android:textIsSelectable="false"
         android:text="This is a good Post, I hope it will have 2 lines. Please give me 2 lines"
         android:textSize="16sp"
-        android:ellipsize="end"/>
+        android:ellipsize="end"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/lblEntryDate"
@@ -27,5 +30,6 @@
         android:text="123"
         android:maxLines="1"
         android:textSize="12sp"
-        />
+        android:gravity="right"
+        android:layout_marginTop="15dp" />
 </LinearLayout>

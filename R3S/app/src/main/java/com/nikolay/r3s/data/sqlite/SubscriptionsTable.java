@@ -21,6 +21,7 @@ public class SubscriptionsTable extends DbTable{
         rss = rss.replace("feed.","");
         rss = rss.replace("feeds.","");
         rss = rss.replace("rss.","");
+        rss = rss.replace("rssfeeds.","");
         int index = rss.indexOf("//") + 2;
         index = rss.indexOf('/', index);
         String faviconUrl = rss.substring(0, index) + "/favicon.ico";

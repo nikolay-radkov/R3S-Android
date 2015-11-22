@@ -7,5 +7,7 @@
     <ListView
         android:id="@+id/entries_list_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:divider="@color/colorBackground"
+        android:dividerHeight="5dp"/>
 </RelativeLayout>

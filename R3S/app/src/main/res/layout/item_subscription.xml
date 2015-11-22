@@ -10,11 +10,11 @@
 
     <ImageView
         android:id="@+id/postThumb"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginRight="5dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/error" />
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/postTitleLabel"
@@ -27,7 +27,8 @@
         android:maxLines="1"
         android:text="This is a good Post, I hope it will have 2 lines. Please give me 2 lines"
         android:textIsSelectable="false"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/postUrlLabel"
@@ -37,10 +38,11 @@
         android:layout_alignLeft="@+id/postThumb"
         android:layout_alignStart="@+id/postThumb"
         android:maxLines="1"
-        android:gravity="center"
         android:text="http://www.rss.com"
         android:textSize="12sp"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="10dp"
+        android:textStyle="italic"
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -50,6 +52,6 @@
         android:layout_below="@+id/postUrlLabel"
         android:layout_alignLeft="@+id/postThumb"
         android:layout_alignStart="@+id/postThumb"
-        android:gravity="center"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:gravity="right" />
 </RelativeLayout>

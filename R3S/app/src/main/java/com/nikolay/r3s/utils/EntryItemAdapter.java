@@ -39,13 +39,7 @@ public class EntryItemAdapter extends ArrayAdapter<Entry> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        int background = R.color.colorOdd;
-
-        if (position % 2 == 0) {
-            background = R.color.colorEven;
-        }
-
-        convertView.setBackgroundColor(ContextCompat.getColor(myContext, background));
+        convertView.setBackgroundColor(ContextCompat.getColor(myContext, R.color.colorItem));
 
         viewHolder.entryTitleView.setText(data.get(position).getTitle());
         viewHolder.entryDateView.setText(data.get(position).getCreatedAt());

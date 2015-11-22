@@ -54,13 +54,7 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
         viewHolder.postDateView.setText(data.get(position).getUpdatedAt());
         viewHolder.postUrlLabel.setText(data.get(position).getRss());
 
-        int background = R.color.colorOdd;
-
-        if (position % 2 == 0) {
-            background = R.color.colorEven;
-        }
-
-        convertView.setBackgroundColor(ContextCompat.getColor(myContext, background));
+        convertView.setBackgroundColor(ContextCompat.getColor(myContext, R.color.colorItem));
 
         viewHolder.imageURL = data.get(position).getFavicon();
         new DownloadImageTask(viewHolder.postThumbView).execute(data.get(position).getFavicon());
@@ -99,7 +93,7 @@ public class SubscriptionItemAdapter extends ArrayAdapter<Subscription> {
             if (result != null) {
                 bmImage.setImageBitmap(result);
             } else {
-                bmImage.setImageResource(R.drawable.error);
+                bmImage.setImageResource(R.mipmap.ic_launcher);
             }
         }
     }
